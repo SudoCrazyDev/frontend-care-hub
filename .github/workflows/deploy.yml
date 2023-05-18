@@ -32,6 +32,6 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./build
+          local-dir: ./dist/
           server-dir: public_html/carehub.harayadevstudio.tech/
           protocol: ftp
