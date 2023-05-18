@@ -1,8 +1,9 @@
 import React from "react";
 import TabPanel from '@mui/joy/TabPanel';
 import { GenerateFakeMedicalRecord } from "../../../helpers/models/MedicalRecord.Model";
-import { InputAdornment, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import { FilterTextInput } from "../../../components/CHInputs/CareHubInputs";
 
 export default function PatientLabRecords(){
     const medicalRecords = GenerateFakeMedicalRecord();
@@ -10,7 +11,7 @@ export default function PatientLabRecords(){
         <TabPanel value={1}>
             <div className="card-body bg-white rounded p-3 d-flex flex-row flex-wrap" style={{ minHeight: '300px'}}>
                 <div className="col-12 d-flex flex-row">
-                    <TextField 
+                    <FilterTextInput 
                         variant="outlined" 
                         label="Search" 
                         className="my-2" 
