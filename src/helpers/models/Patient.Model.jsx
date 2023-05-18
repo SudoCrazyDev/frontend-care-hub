@@ -51,15 +51,15 @@ export const PatientModel = {
 const FakePatientModel = () => {
     return {
         patient_code: faker.datatype.uuid(),
-        firstname: faker.name.firstName(),
-        middlename: faker.name.middleName(),
-        lastname: faker.name.lastName(),
+        firstname: faker.person.firstName(),
+        middlename: faker.person.middleName(),
+        lastname: faker.person.lastName(),
         birthdate: new Date(faker.date.birthdate()).toISOString(),
-        address: faker.address.streetName(),
+        address: faker.location.streetAddress(true),
         gender: faker.helpers.arrayElement(['Male', 'Female']),
         civil_status: faker.helpers.arrayElement(['Single', 'Married', 'Divorced']),
         religion: faker.helpers.arrayElement(['Roman Catholic', 'Islam', 'Buddhist', 'Others']),
-        occupation: faker.name.jobTitle(),
+        occupation: faker.person.jobTitle(),
         contact_number: faker.phone.number(),
     };
 };
