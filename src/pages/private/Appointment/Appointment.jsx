@@ -7,10 +7,9 @@ import FluentTableRow from "../../../components/FluentTable/components/FluentTab
 import { CHTableIconButton } from "../../../components/CHButtons/CareHubButtons";
 import {faker} from "@faker-js/faker";
 import TopicIcon from '@mui/icons-material/Topic';
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { DatePicker } from "@mui/x-date-pickers";
 import { GetPatients } from "../../../helpers/HelperRedux";
+import { FilterTextInput } from "../../../components/CHInputs/CareHubInputs";
+import { CHDatePicker } from "../../../components/CHInputs/CareHubInputs";
 
 const randomPatients = Array(15).fill().map((_, i) => ({
     name: faker.name.fullName(),
@@ -32,16 +31,9 @@ export default function Appointments(){
                     </div>
                     <Divider className="my-3"/>
                     <div className="d-flex flex-row flex-wrap">
-                        <div className="m-2 d-flex flex-row gap-3">
-                            <TextField className="col-6" size="lg" variant="outlined" type="text" label="Patient Name"/>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker 
-                                label="Consultation Date" 
-                                sx={{
-                                    width: "100%",
-                                }}
-                                />
-                            </LocalizationProvider>
+                        <div className="d-flex flex-row gap-3">
+                            <FilterTextInput size="lg" type="text" label="Patient Name"/>
+                            <CHDatePicker />
                         </div>
                         <div className="col-12 mx-h-50 overflow-y-scroll">
                             <FluentTable>

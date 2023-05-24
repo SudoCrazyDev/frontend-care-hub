@@ -8,6 +8,7 @@ import TopicIcon from '@mui/icons-material/Topic';
 import { CHTableIconButton } from "../../../components/CHButtons/CareHubButtons";
 import { GetPatients } from "../../../helpers/HelperRedux";
 import { NavLink } from "react-router-dom";
+import { FilterTextInput } from "../../../components/CHInputs/CareHubInputs";
 
 export default function Patients(){
     const patients = GetPatients();
@@ -23,8 +24,8 @@ export default function Patients(){
                 </div>
                 <Divider className="my-3"/>
                 <div className="d-flex flex-row flex-wrap">
-                    <div className="m-2 d-flex flex-row">
-                        <TextField size="small" variant="outlined" type="text" label="Patient Name"/>
+                    <div className="d-flex flex-row">
+                        <FilterTextInput size="lg" type="text" label="Patient Name" />
                     </div>
                     <div className="col-12 mx-h-50 overflow-y-scroll">
                         <FluentTable>

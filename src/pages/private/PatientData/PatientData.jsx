@@ -7,8 +7,8 @@ import { GetPatients } from "../../../helpers/HelperRedux";
 import { useMemo } from "react";
 import { calculateAgeWithMonths } from "../../../helpers/HelperFunctions";
 import { PatientModel } from "../../../helpers/models/Patient.Model";
-import PatientMedicalRecords from "./PatientData.MedicalRecords";
 import PatientLabRecords from "./PatientData.LabRecords";
+import PatientAppointments from "./PatientData.Appointments";
 
 export default function PatientData(){
     const {patientId} = useParams();
@@ -50,12 +50,11 @@ export default function PatientData(){
             <div className="col-12">
                 <Tabs size="lg" className="rounded" defaultValue={0} style={{ background: '#f4e9e6'}}>
                     <TabList variant="soft" color="primary">
-                        <Tab className="fw-bolder">MEDICAL RECORDS</Tab>
                         <Tab className="fw-bolder">LABORATORY RECORDS</Tab>
                         <Tab className="fw-bolder">APPOINTMENTS</Tab>
                     </TabList>
-                    <PatientMedicalRecords />
                     <PatientLabRecords />
+                    <PatientAppointments />
                 </Tabs>
             </div>
             
