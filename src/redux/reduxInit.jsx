@@ -1,21 +1,26 @@
 import React, { useEffect } from "react";
-import { setPatients } from "./slicers/patientsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { GenerateFakePatients } from "../helpers/models/Patient.Model";
+import { setLinks, setLoading, setPatients, setInitialPatients } from "./slicers/patientsSlice";
+import { useDispatch } from "react-redux";
+import Axios  from 'axios';
 
 export default function ReduxInitialize({children}){
     const dispatch = useDispatch();
-    const { patients } = useSelector(state => state.patients);
 
     const handleFetchPatients = () => {
-        const patients = GenerateFakePatients(20);
-        dispatch(setPatients(patients));
+        dispatch(setLoading(true));
+        Axios.get(`patients/get_patients`)
+        .then(res => {
+            dispatch(setPatients(res.data.data));
+            dispatch(setInitialPatients(res.data.data));
+            dispatch(setLinks(res.data.links))
+        })
+        .finally(()=>{
+            dispatch(setLoading(false));
+        })
     };
 
     useEffect(()=>{
-        if(patients.length === 0){
-            handleFetchPatients();
-        }
+        handleFetchPatients();
     },[]);
 
     return(

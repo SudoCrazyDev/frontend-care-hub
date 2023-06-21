@@ -1,8 +1,9 @@
 import React from "react";
 import { configureStore } from '@reduxjs/toolkit';
-import patientsSlice from "./slicers/patientsSlice";
 import storage from "redux-persist/lib/storage";
 import { persistStore, persistReducer } from 'redux-persist';
+
+import patientsSlice from "./slicers/patientsSlice";
 
 const patientPersistConfig = {
     key: 'health-flow-v1',

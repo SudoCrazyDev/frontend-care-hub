@@ -3,7 +3,9 @@ import { createSlice  } from "@reduxjs/toolkit";
 
 const initialState = {
     patients: [],
-    loading: true
+    initialPatients: [],
+    loading: true,
+    links: [],
 }
 
 export const patientsSlice = createSlice({
@@ -16,8 +18,14 @@ export const patientsSlice = createSlice({
         setLoading: (state, action) => {
             state.loading = action.payload;
         },
+        setLinks: (state, action) => {
+            state.links = action.payload;
+        },
+        setInitialPatients: (state, action) => {
+            state.initialPatients = action.payload;
+        },
         addPatient: (state, action) => {
-            state.patients = [{...state.patients}, action.payload];
+            state.patients = [...state.patients, action.payload];
         }
     }
 });
@@ -25,7 +33,9 @@ export const patientsSlice = createSlice({
 export const {
     setPatients,
     addPatient,
-    setLoading
+    setLoading,
+    setLinks,
+    setInitialPatients
 } = patientsSlice.actions;
 
 export default patientsSlice.reducer;

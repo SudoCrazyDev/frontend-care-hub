@@ -1,46 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TabPanel from '@mui/joy/TabPanel';
-import { GenerateFakeMedicalRecord } from "../../../helpers/models/MedicalRecord.Model";
-import SearchIcon from '@mui/icons-material/Search';
-import { CHDatePicker, FilterTextInput } from "../../../components/CHInputs/CareHubInputs";
+import { CHDatePicker } from "../../../components/CHInputs/CareHubInputs";
+import AppointmentModal from "../Appointment/Appointment.modal";
+import axios from "axios";
+import AppointmentsTable from "./components/Appointments/PatientData.Appointments.Table";
 
-export default function PatientAppointments(){
+export default function PatientAppointments({patientData}){
+    const [appointments, setAppointments] = useState([]);
+    const [fetching, setFetching] = useState(false);
+
+    const handleFetchAppointments = () => {
+        setFetching(true);
+        axios.get(`appointments/get_appointment_by_patient/${patientData.id}`)
+        .then(res => {
+            setAppointments(res.data.appointments);
+        })
+        .finally(()=>{
+            setFetching(false);
+        })
+    };
+
+    useEffect(()=>{
+        handleFetchAppointments();
+    },[]);
+
     return(
-        <TabPanel value={1}>
+        <TabPanel value={0}>
             <div className="card-body bg-white rounded p-3 d-flex flex-row flex-wrap" style={{ minHeight: '300px'}}>
                 <div className="d-flex flex-row gap-3 w-100">
-                    <div className="d-flex flex-row gap-3 w-100">
-                        <FilterTextInput 
-                            variant="outlined" 
-                            label="Search" 
-                            className="my-2" 
-                            InputProps={{
-                                endAdornment: (
-                                    <SearchIcon />
-                                )
-                            }}
-                        />
-                        <CHDatePicker label="Request Date" />
-                    </div>
+                    <CHDatePicker label="Request Date" />
                     <div className="d-flex flex-row justify-content-end m-auto w-100">
-
+                        <AppointmentModal patientData={patientData} setAppointments={setAppointments}/>
                     </div>
                 </div>
                 <div className="col-12">
-                    <table className="table table-bordered shadow-lg">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Requested Date</th>
-                                <th>Result Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
+                    <AppointmentsTable appointments={appointments} fetching={fetching} setAppointments={setAppointments}/>
                 </div>
             </div>
         </TabPanel>

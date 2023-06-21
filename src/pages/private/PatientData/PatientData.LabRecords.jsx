@@ -10,7 +10,7 @@ import LabResult from "./components/LabResult/LabResult";
 export default function PatientLabRecords(){
     const medicalRecords = GenerateFakeMedicalRecord();
     return(
-        <TabPanel value={0}>
+        <TabPanel value={1}>
             <div className="card-body bg-white rounded p-3 d-flex flex-row flex-wrap" style={{ minHeight: '300px'}}>
                 <div className="d-flex flex-row gap-3 w-100">
                     <div className="d-flex flex-row gap-3 w-100">

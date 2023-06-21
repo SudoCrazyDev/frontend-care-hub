@@ -1,11 +1,11 @@
 import TabList from "@mui/joy/TabList/TabList";
 import Tabs from "@mui/joy/Tabs/Tabs";
 import Tab from '@mui/joy/Tab';
-import { Divider } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { GetPatients } from "../../../helpers/HelperRedux";
 import { useMemo } from "react";
-import { calculateAgeWithMonths } from "../../../helpers/HelperFunctions";
+import { CapitalizeFirstLetter, calculateAgeWithMonths } from "../../../helpers/HelperFunctions";
 import { PatientModel } from "../../../helpers/models/Patient.Model";
 import PatientLabRecords from "./PatientData.LabRecords";
 import PatientAppointments from "./PatientData.Appointments";
@@ -15,7 +15,7 @@ export default function PatientData(){
     const patients = GetPatients();
 
     const patientData = useMemo(() => {
-        let foundPatient = patients.find(patient => patient.patient_code == patientId);
+        let foundPatient = patients.find(patient => patient.id == patientId);
         return foundPatient  || PatientModel;
     },[patients, patientId]);
     
@@ -27,7 +27,7 @@ export default function PatientData(){
                     <h5 className="m-0 fw-normal text-muted">{patientData.address}</h5>
                     <div className="d-flex flex-row gap-3">
                         <h5 className="m-0 fw-normal text-muted">SEX:</h5>
-                        <h5 className="m-0 fw-bolder">{patientData.gender}</h5>
+                        <h5 className="m-0 fw-bolder">{CapitalizeFirstLetter(patientData.gender)}</h5>
                         <h5 className="m-0 fw-normal text-muted">CIVIL STATUS:</h5>
                         <h5 className="m-0 fw-bolder">{patientData.civil_status}</h5>
                     </div>
@@ -35,7 +35,7 @@ export default function PatientData(){
                         <h5 className="m-0 fw-normal text-muted">BIRTHDATE:</h5>
                         <h5 className="m-0 fw-bolder">{new Date(patientData.birthdate).toLocaleDateString('en-CA')}</h5>
                         <h5 className="m-0 fw-normal text-muted">AGE:</h5>
-                        <h5 className="m-0 fw-bolder">{calculateAgeWithMonths(patientData.birthdate).age} years and {calculateAgeWithMonths(patientData.birthdate).months} months</h5>
+                        <h5 className="m-0 fw-bolder">{calculateAgeWithMonths(patientData.birthdate).age} years old</h5>
                     </div>
                     <div className="d-flex flex-row gap-3">
                         <h5 className="m-0 fw-normal text-muted">LIST VIST:</h5>
@@ -50,11 +50,11 @@ export default function PatientData(){
             <div className="col-12">
                 <Tabs size="lg" className="rounded" defaultValue={0} style={{ background: '#f4e9e6'}}>
                     <TabList variant="soft" color="primary">
-                        <Tab className="fw-bolder">LABORATORY RECORDS</Tab>
                         <Tab className="fw-bolder">APPOINTMENTS</Tab>
+                        <Tab className="fw-bolder">LABORATORY RECORDS</Tab>
                     </TabList>
+                    <PatientAppointments patientData={patientData}/>
                     <PatientLabRecords />
-                    <PatientAppointments />
                 </Tabs>
             </div>
             

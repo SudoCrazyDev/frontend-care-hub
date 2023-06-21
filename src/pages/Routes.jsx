@@ -9,6 +9,8 @@ import PatientData from "./private/PatientData/PatientData";
 import InPatient from "./private/InPatient/InPatient";
 import OutPatient from "./private/OutPatient/OutPatient";
 import ReduxInitialize from "../redux/reduxInit";
+import ContextStore from "../helpers/ContextStore";
+import { SnackBarNotification } from "../components/GlobalComponents";
 
 function PublicRoutes(){
     return(
@@ -21,17 +23,20 @@ function PublicRoutes(){
 function PrivateRoutes(){
     return(
         <ReduxInitialize>
-            <MainLayout>
-                <Routes>
-                    <Route path="/patients" element={<Patients />} />
-                    <Route path="/patients/:patientId" element={<PatientData />} />
-                    <Route path="/patients/in-patients" element={<InPatient />} />
-                    <Route path="/patients/out-patients" element={<OutPatient />} />
-                    <Route path="/appointments" element={<Appointments />} />
-                    <Route path="/laboratory" element={<Laboratory />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-            </MainLayout>
+            <ContextStore>
+                <MainLayout>
+                    <Routes>
+                        <Route path="/patients" element={<Patients />} />
+                        <Route path="/patients/:patientId" element={<PatientData />} />
+                        <Route path="/patients/in-patients" element={<InPatient />} />
+                        <Route path="/patients/out-patients" element={<OutPatient />} />
+                        <Route path="/appointments" element={<Appointments />} />
+                        <Route path="/laboratory" element={<Laboratory />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </MainLayout>
+                <SnackBarNotification />
+            </ContextStore>
         </ReduxInitialize>
     );
 };

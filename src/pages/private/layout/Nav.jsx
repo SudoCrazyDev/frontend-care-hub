@@ -43,15 +43,16 @@ function SideNav(){
                 <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><RecentActorsIcon fontSize="medium" /> Appointments</p>
             </CHNavButton>
         </NavLink>
+
+        {/* <NavLink to="/laboratory">
+            <CHNavButton variant="text" className={`p-2 justify-content-start active ${handleIsPageActive('laboratory')}`} fullWidth>
+                <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><ScienceIcon fontSize="medium" /> Laboratory</p>
+            </CHNavButton>
+        </NavLink> */}
+
         <div className="my-3"></div>
 
         <p className="m-0" style={{ color: '#9dbad3'}}>Patients</p>
-        <NavLink to="/patients/in-patients">
-            <CHNavButton variant="text" className={`p-2 justify-content-start ${handleIsPageActive('patients/in-patients')}`} fullWidth>
-                <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><AssignmentTurnedInIcon fontSize="medium" /> In-Patients</p>
-            </CHNavButton>
-        </NavLink>
-    
         <NavLink to="/patients/out-patients">
             <CHNavButton variant="text" className={`p-2 justify-content-start ${handleIsPageActive('patients/out-patients')}`} fullWidth>
                 <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><ExitToAppIcon fontSize="medium" /> Out-Patients</p>
@@ -60,11 +61,6 @@ function SideNav(){
         <div className="my-3"></div>
 
         <p className="m-0" style={{ color: '#9dbad3'}}>Other Menu</p>
-        <NavLink to="/laboratory">
-            <CHNavButton variant="text" className={`p-2 justify-content-start active ${handleIsPageActive('laboratory')}`} fullWidth>
-                <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><ScienceIcon fontSize="medium" /> Laboratory</p>
-            </CHNavButton>
-        </NavLink>
         <NavLink to="/laboratory">
             <CHNavButton variant="text" className={`p-2 justify-content-start active ${handleIsPageActive('Medicines')}`} fullWidth>
                 <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><MedicationIcon fontSize="medium" /> Medicines</p>

@@ -1,5 +1,5 @@
-import { Checkbox, Divider, FormControlLabel } from "@mui/material";
-import React from "react";
+import { Button, Checkbox, Divider, FormControlLabel } from "@mui/material";
+import React, { useEffect } from "react";
 
 const BloodChemistryOptions = [
     {id: 'fbs', title: 'FBS', value: false},
@@ -38,26 +38,36 @@ const XrayOptions = [
     {id: 'kvb_ivp', title: 'KVB-IVP', value: false},
 ];
 
-export default function LabRequestForm(){
+export default function LabRequestForm({formik}){
+
+    useEffect(()=>{
+        //Declare the initial values for lab request.
+        formik.setFieldValue('lab_request.cbc', false);
+        formik.setFieldValue('lab_request.urinalysis', false);
+        formik.setFieldValue('lab_request.stool_exam', false);
+        formik.setFieldValue('lab_request.blood_chemistry', BloodChemistryOptions);
+        formik.setFieldValue('lab_request.xray', XrayOptions);
+    },[]);
+
     return(
         <div className="d-flex flex-row flex-wrap">
             <div className="col-12">
                 <h5 className="m-0 text-dark fw-bolder">Lab Requests</h5>
             </div>
             <div className="col-12 d-flex flex-row justify-content-center">
-                <FormControlLabel control={<Checkbox />} label="CBC" />
-                <FormControlLabel control={<Checkbox />} label="Urinalysis" />
-                <FormControlLabel control={<Checkbox />} label="Stool Exam" />
+                <FormControlLabel control={<Checkbox onChange={(event)=> formik.setFieldValue('lab_request.cbc', event.target.checked)}/>} label="CBC" />
+                <FormControlLabel control={<Checkbox onChange={(event)=> formik.setFieldValue('lab_request.urinalysis', event.target.checked)}/>} label="Urinalysis" />
+                <FormControlLabel control={<Checkbox onChange={(event)=> formik.setFieldValue('lab_request.stool_exam', event.target.checked)}/>} label="Stool Exam" />
             </div>
             <div className="col-12">
                 <Divider />
             </div>
-            <div className="col-12 my-2">
+            <div className="col-12 my-2 d-flex flex-row align-items-center">
                 <h5 className="m-0 text-dark fw-bolder">Blood Chemistry</h5>
             </div>
-            <div className="col-12 d-flex flex-row flex-wrap justify-content-around">
+            <div className="ps-2 col-12 d-flex flex-row flex-wrap justify-content-around">
                 {BloodChemistryOptions.map((item, index) => (
-                    <FormControlLabel className="col-3" key={index} control={<Checkbox />} label={item.title} />
+                    <FormControlLabel className="col-3" key={index} control={<Checkbox onChange={(event) => formik.setFieldValue(`lab_request.blood_chemistry[${index}]`, {id: item.id, title: item.title, value: event.target.checked})}/>} label={item.title} />
                 ))}
             </div>
             <div className="col-12">
@@ -68,7 +78,7 @@ export default function LabRequestForm(){
             </div>
             <div className="col-12 d-flex flex-row flex-wrap justify-content-around">
                 {XrayOptions.map((item, index) => (
-                    <FormControlLabel className="col-4" key={index} control={<Checkbox />} label={item.title} />
+                    <FormControlLabel className="col-4" key={index} control={<Checkbox onChange={(event) => formik.setFieldValue(`lab_request.xray[${index}]`, {id: item.id, title: item.title, value: event.target.checked})}/>} label={item.title} />
                 ))}
             </div>
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import CircularProgress from '@mui/joy/CircularProgress';
 
 function calculateAgeWithMonths(birthday) {
   const birthdayDate = new Date(birthday);
@@ -7,4 +8,26 @@ function calculateAgeWithMonths(birthday) {
   return { age, months };
 }
 
-export { calculateAgeWithMonths }
+function submittingLoading(formik){
+  if(formik.isSubmitting){
+    return <CircularProgress variant="plain" size="sm" color="neutral" className="ms-1" />
+  }
+};
+
+function CapitalizeFirstLetter(string){
+  return String(string).charAt(0).toUpperCase() + String(string).slice(1);
+};
+
+function GetStatusBadge(status){
+  switch (status) {
+    case 'cancelled':
+      return <span className="badge bg-danger">Cancelled</span>;
+    case 'confirmed':
+      return <span className="badge bg-success">Confirmed</span>;
+    case 'pending':
+      return <span className="badge bg-secondary">Pending</span>;
+    default:
+      return <span className="badge bg-secondary">{status}</span>;
+  }
+};
+export { calculateAgeWithMonths, submittingLoading, GetStatusBadge, CapitalizeFirstLetter }

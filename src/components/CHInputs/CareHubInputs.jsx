@@ -13,18 +13,21 @@ export const FilterTextInput = ({...props}) => {
         fullWidth 
         {...props} 
         InputProps={{
-            endAdornment: <InputAdornment position="end"><SearchIcon /></InputAdornment>,
+            endAdornment: <InputAdornment position="end">
+                <SearchIcon />
+            </InputAdornment>,
         }}
         />
     );
 };
 
-export const CHDatePicker = ({label = 'Date Filter'}) => {
+export const CHDatePicker = ({...props}) => {
     return(
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker 
-                label={label}
+                label='Select Date'
                 className="w-100 my-2"
+                {...props}
                 />
             </LocalizationProvider>
     );
