@@ -3,7 +3,7 @@ import './styles/all.scss'
 import { PublicRoutes, PrivateRoutes } from './pages/Routes';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://api.carehub.harayadevstudio.tech/api/';
+axios.defaults.baseURL = 'https://carehubapi.harayadevstudio.tech/api/';
 
 function App() {
   return(
