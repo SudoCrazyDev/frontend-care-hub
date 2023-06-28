@@ -15,8 +15,6 @@ export default function LabRequest({formik, type}){
         setShowModal(false);
     };
 
-    console.log(formik.values);
-
     return(
         <>
         <Button variant="contained" color="primary" onClick={handleShowModal} hidden={Boolean(formik.values.has_lab_request)}>{type} Lab Request</Button>

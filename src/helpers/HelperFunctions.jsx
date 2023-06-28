@@ -23,7 +23,9 @@ function GetStatusBadge(status){
     case 'cancelled':
       return <span className="badge bg-danger">Cancelled</span>;
     case 'confirmed':
-      return <span className="badge bg-success">Confirmed</span>;
+      return <span className="badge bg-success">{String(status).charAt(0).toUpperCase() + String(status).slice(1)}</span>;
+    case 'completed':
+      return <span className="badge bg-success">{String(status).charAt(0).toUpperCase() + String(status).slice(1)}</span>;
     case 'pending':
       return <span className="badge bg-secondary">Pending</span>;
     default:

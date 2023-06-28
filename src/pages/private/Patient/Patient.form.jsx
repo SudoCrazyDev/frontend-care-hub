@@ -51,6 +51,7 @@ export default function PatientForm({formik}){
                             <TextField 
                                 fullWidth={true}
                                 label="birthdate"
+                                {...formik.getFieldProps('birthdate')}
                             />
                         )}
                         />

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { setLinks, setLoading, setPatients, setInitialPatients } from "./slicers/patientsSlice";
 import { useDispatch } from "react-redux";
 import Axios  from 'axios';
+import { setInitialMedicines, setMedicines, setLoadingMedicine } from "./slicers/medicinesSlice";
 
 export default function ReduxInitialize({children}){
     const dispatch = useDispatch();
@@ -19,8 +20,21 @@ export default function ReduxInitialize({children}){
         })
     };
 
+    const handleFetchMedicines = () => {
+        dispatch(setLoadingMedicine(true));
+        Axios.get('medicines/get_all_medicines')
+        .then(res => {
+            dispatch(setMedicines(res.data));
+            dispatch(setInitialMedicines(res.data));
+        })
+        .finally(() => {
+            dispatch(setLoadingMedicine(false));
+        });
+    };
+
     useEffect(()=>{
         handleFetchPatients();
+        handleFetchMedicines();
     },[]);
 
     return(

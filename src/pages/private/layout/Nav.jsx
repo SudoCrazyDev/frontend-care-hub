@@ -44,13 +44,19 @@ function SideNav(){
             </CHNavButton>
         </NavLink>
 
+        <NavLink to="/medicines">
+            <CHNavButton variant="text" className={`p-2 justify-content-start ${handleIsPageActive('medicines')}`} fullWidth>
+                <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><MedicationIcon fontSize="medium" /> Medicines</p>
+            </CHNavButton>
+        </NavLink>
+
         {/* <NavLink to="/laboratory">
             <CHNavButton variant="text" className={`p-2 justify-content-start active ${handleIsPageActive('laboratory')}`} fullWidth>
                 <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><ScienceIcon fontSize="medium" /> Laboratory</p>
             </CHNavButton>
         </NavLink> */}
 
-        <div className="my-3"></div>
+        {/* <div className="my-3"></div>
 
         <p className="m-0" style={{ color: '#9dbad3'}}>Patients</p>
         <NavLink to="/patients/out-patients">
@@ -58,10 +64,10 @@ function SideNav(){
                 <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><ExitToAppIcon fontSize="medium" /> Out-Patients</p>
             </CHNavButton>
         </NavLink>
-        <div className="my-3"></div>
+        <div className="my-3"></div> */}
 
         <p className="m-0" style={{ color: '#9dbad3'}}>Other Menu</p>
-        <NavLink to="/laboratory">
+        {/* <NavLink to="/laboratory">
             <CHNavButton variant="text" className={`p-2 justify-content-start active ${handleIsPageActive('Medicines')}`} fullWidth>
                 <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><MedicationIcon fontSize="medium" /> Medicines</p>
             </CHNavButton>
@@ -75,7 +81,7 @@ function SideNav(){
             <CHNavButton variant="text" className={`p-2 justify-content-start active ${handleIsPageActive('Doctors')}`} fullWidth>
                 <p className="m-0 text-capitalize fw-light fs-5" style={{ color: '#e2f6fc'}}><Groups2Icon fontSize="medium" /> Doctors</p>
             </CHNavButton>
-        </NavLink>
+        </NavLink> */}
         </div>
     );
 };

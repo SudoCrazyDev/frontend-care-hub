@@ -68,8 +68,9 @@ export default function Appointments(){
                             <FluentTable>
                                 <FluentTableHeader>
                                     <tr>
-                                        <th>Priority #</th>
+                                        <th width={'1%'}>#</th>
                                         <th>Patient</th>
+                                        <th>Lab Request</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -78,7 +79,14 @@ export default function Appointments(){
                                     {filteredAppointments.map((appointment, index) => (
                                         <FluentTableRow key={index}>
                                             <td>{index + 1}</td>
-                                            <td>{appointment.patient.firstname} {appointment.patient.lastname}</td>
+                                            <td className="fw-bolder text-uppercase">{appointment.patient.firstname} {appointment.patient.lastname}</td>
+                                            <td>{
+                                                appointment.has_lab_request ?
+                                                <span className="badge bg-success">Yes</span>
+                                                :
+                                                <span className="badge bg-danger">No</span>
+                                                }
+                                            </td>
                                             <td>
                                                 {GetStatusBadge(appointment.status)}
                                             </td>

@@ -2,8 +2,9 @@ import axios from 'axios';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import CircularProgress from '@mui/joy/CircularProgress';
 
-export default function LabRequestResultUpload({laboratory}){
+export default function LabRequestResultUpload({laboratory, setLabRequest}){
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState({});
     const [uploading, setUploading] = useState(false);
@@ -24,7 +25,8 @@ export default function LabRequestResultUpload({laboratory}){
 
         axios.post('file_upload', formData)
         .then(res => {
-            console.log(res);
+            setLabRequest(res.data);
+            handleOpen();
         })
         .catch(err => {
 
@@ -49,7 +51,7 @@ export default function LabRequestResultUpload({laboratory}){
             </div>
         </DialogContent>
         <DialogActions>
-            <Button variant="contained" color="primary" disabled={uploading} onClick={() => handleFileUpload()}>Upload</Button>
+            <Button variant="contained" color="primary" disabled={uploading} onClick={() => handleFileUpload()}>Upload {uploading && <CircularProgress variant="plain" size="sm" color="neutral" className="ms-1" />}</Button>
             <Button variant="contained" color="error" onClick={() => handleOpen()}>Cancel</Button>
         </DialogActions>
         </Dialog>

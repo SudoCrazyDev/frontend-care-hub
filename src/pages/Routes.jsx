@@ -11,6 +11,7 @@ import OutPatient from "./private/OutPatient/OutPatient";
 import ReduxInitialize from "../redux/reduxInit";
 import ContextStore from "../helpers/ContextStore";
 import { SnackBarNotification } from "../components/GlobalComponents";
+import Medicines from "./private/Medicines/Medicines";
 
 function PublicRoutes(){
     return(
@@ -32,6 +33,7 @@ function PrivateRoutes(){
                         <Route path="/patients/out-patients" element={<OutPatient />} />
                         <Route path="/appointments" element={<Appointments />} />
                         <Route path="/laboratory" element={<Laboratory />} />
+                        <Route path="/medicines" element={<Medicines />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </MainLayout>
