@@ -17,8 +17,8 @@ export default function OutPatientLabRequest({appointment}){
 
     const handleViewResult = () => {
         let properUrl = labrequest.result_url.replace("public", "storage");
-        console.log(properUrl);
-        window.open(`http://localhost:8000/${properUrl}`, "_blank");
+        // window.open(`http://localhost:8000/${properUrl}`, "_blank");
+        window.open(`https://carehubapi.harayadevstudio.tech/${properUrl}`, "_blank");
     };
 
     useEffect(() => {
