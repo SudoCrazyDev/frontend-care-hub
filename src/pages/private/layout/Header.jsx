@@ -1,10 +1,13 @@
+import { Avatar } from "@mui/material";
+import ProfileDropDown from "./Header.ProfileDropDown";
+
 export default function Header(){
     return (
         <div
-          className="px-5 d-flex flex-row justify-content-between align-items-center"
-          style={{ height: "50px", background: "white", color: '#88d8f3' }}
+          className="px-5 d-flex flex-row flex-wrap align-items-center"
+          style={{ height: "80px", color: '#88d8f3', background: 'white', borderBottom: "3px solid #E3E8EA" }}
         >
-          <h4 className="m-0">Dr. Torre Kidney Specialist Clinic</h4>
+          <ProfileDropDown />
         </div>
       );
 };

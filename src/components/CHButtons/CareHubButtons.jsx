@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 
 const CHButton = styled(Button)`
-    background-color: #2fb0ea;
+    background-color: #3B9488;
     &:hover{
         background-color: #2A9CD1;
     };

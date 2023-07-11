@@ -1,6 +1,6 @@
 export default function FluentTableHeader({children}){
     return(
-        <thead>
+        <thead className="rounded">
             {children}
         </thead>
     );

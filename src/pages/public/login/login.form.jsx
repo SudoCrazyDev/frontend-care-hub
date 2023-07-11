@@ -1,25 +1,27 @@
 import { TextField, InputAdornment, IconButton } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import InitializeFormik from "./login.dal";
 
 export default function LoginForm() {
-    const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const formik = InitializeFormik();
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = () => {
-    setLoading(!loading);
-  };
-
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="form-group d-flex flex-row flex-wrap gap-3">
+      <div className="form-group d-flex flex-row flex-wrap gap-3 justify-content-center">
+        {formik.errors.response &&
+          <div className="card bg-danger">
+            <div className="card-body">
+                <h5 className="m-0 text-white">Invalid Credentials</h5>
+            </div>
+          </div>
+        }
         <TextField
           type="text"
           id="username"
@@ -57,8 +59,7 @@ export default function LoginForm() {
           helperText={formik.touched.password && formik.errors.password}
         />
         <LoadingButton
-          loading={loading}
-          onClick={handleSubmit}
+          loading={formik.isSubmitting}
           variant="contained"
           color="primary"
           size="large"

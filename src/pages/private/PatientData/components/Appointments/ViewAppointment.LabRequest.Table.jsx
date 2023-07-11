@@ -5,6 +5,9 @@ import LabRequestResultUpload from "./ViewAppointment.LabRequest.Upload";
 import LabRequestView from "./ViewAppointment.LabRequest.View";
 import axios from "axios";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import LaboRatoryRequestPrintForm from "../../../../../components/LaboratoryRequestPrintForm";
+import { PDFDownloadLink} from '@react-pdf/renderer';
+import PrintIcon from '@mui/icons-material/Print';
 
 export default function ViewLabRequest({appointment}){
     const [labRequest, setLabRequest] = useState({blood_chemistry: "[]", xray: "[]"});
@@ -33,6 +36,8 @@ export default function ViewLabRequest({appointment}){
     useEffect(() => {
         handleFetchLabRequest();
     },[])
+
+    console.log(appointment);
     return(
         <>
         <table className="table table-hover table-bordered">
@@ -53,22 +58,32 @@ export default function ViewLabRequest({appointment}){
                 {appointment.has_lab_request === 1 && !fetching &&
                     (
                         <tr>
-                            <td width={'40%'}>{labRequest.id}</td>
+                            <td className="fw-bold" width={'50%'}>{labRequest.id}</td>
                             <td>{GetStatusBadge(labRequest.status)}</td>
                             <td>
                                <LabRequestView labRequest={labRequest} />
                                {
-                                labRequest.result_url === "" && (
+                                labRequest.result_url === null && (
                                     <LabRequestResultUpload laboratory={labRequest} setLabRequest={setLabRequest}/>
                                    )
                                }
-                               {labRequest.result_url !== "" && (
+                               {labRequest.result_url !== null && (
                                 <Tooltip title="View Result">
                                     <IconButton color="primary" onClick={handleViewLabResult}>
                                             <RemoveRedEyeIcon />
                                     </IconButton>
                                 </Tooltip>
                                )}
+                               <PDFDownloadLink document={<LaboRatoryRequestPrintForm appointment={appointment}/>} fileName="LabRequestForm.pdf">
+                                {
+                                    ({blob, url, loading, error}) => loading ? 'Loading Document...' : 
+                                    <Tooltip title="Print Lab Request">
+                                        <IconButton color="primary" size="small" onClick={() => window.open(url)}>
+                                                <PrintIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                }
+                            </PDFDownloadLink>
                             </td>
                         </tr>
                     )

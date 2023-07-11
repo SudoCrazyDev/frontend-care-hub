@@ -1,6 +1,8 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/slicers/userSlice";
 
 const validationSchema = yup.object({
   username: yup.string().required("Username is required"),
@@ -8,7 +10,22 @@ const validationSchema = yup.object({
 });
 
 function InitializeFormik() {
-  const handleSubmit = () => {};
+  const dispatch = useDispatch();
+
+  const handleSubmit = (values) => {
+    Axios.post('login', values)
+    .then(res => {
+      dispatch(setUser(res.data));
+    })
+    .catch(err => {
+      if(err.response.status === 404){
+        formik.setFieldError('response', 'Invalid Credentials')
+      }
+    })
+    .finally(() => {
+      formik.setSubmitting(false);
+    })
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -16,9 +33,7 @@ function InitializeFormik() {
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log("SUBMITTED");
-    },
+    onSubmit: handleSubmit
   });
 
   return formik;

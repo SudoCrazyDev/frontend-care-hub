@@ -38,7 +38,7 @@ export default function PatientTable(){
                 <FluentTable>
                     <FluentTableHeader>
                         <tr>
-                            <th>PATIENT CODE</th>
+                            <th className='rounded-top'>PATIENT CODE</th>
                             <th>PATIENT NAME</th>
                             <th></th>
                         </tr>

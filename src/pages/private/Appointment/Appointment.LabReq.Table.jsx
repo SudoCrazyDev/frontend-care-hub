@@ -3,7 +3,7 @@ import { GetStatusBadge } from '../../../helpers/HelperFunctions';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { IconButton, Tooltip } from "@mui/material";
 
-export default function LabRequestTable({formik}){
+export default function LabRequestTable({formik, patient}){
     return(
         <table className="table table-hover table-bordered">
             <thead>

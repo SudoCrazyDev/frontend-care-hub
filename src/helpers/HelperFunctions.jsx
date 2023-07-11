@@ -26,6 +26,8 @@ function GetStatusBadge(status){
       return <span className="badge bg-success">{String(status).charAt(0).toUpperCase() + String(status).slice(1)}</span>;
     case 'completed':
       return <span className="badge bg-success">{String(status).charAt(0).toUpperCase() + String(status).slice(1)}</span>;
+    case 'complete':
+        return <span className="badge bg-success">{String(status).charAt(0).toUpperCase() + String(status).slice(1)}</span>;
     case 'pending':
       return <span className="badge bg-secondary">Pending</span>;
     default:

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import CreateIcon from '@mui/icons-material/Create';
 import InitializeFormik from "./Medicines.DAL";
 import { submittingLoading } from "../../../helpers/HelperFunctions";
+import { CHButton } from "../../../components/CHButtons/CareHubButtons";
 
 export default function MedicineModal({type = 'new', medicine = {}}){
     const [open, setOpen] = useState(false);
@@ -23,9 +24,9 @@ export default function MedicineModal({type = 'new', medicine = {}}){
     return(
         <>
         {type === 'new' ?
-        <Button variant="contained" color="primary" className="fw-bold" onClick={handleOpenModal}>
+        <CHButton variant="contained" className="fw-bold" onClick={handleOpenModal}>
             Add New Medicine
-        </Button>
+        </CHButton>
         :
         <Tooltip title="Edit Medicine">
             <IconButton color="primary" size="small" onClick={handleOpenModal}>

@@ -25,7 +25,7 @@ export default function PatientModal(){
     },[formik.isSubmitting]);
     return(
         <>
-            <CHButton variant="contained" color="primary" size="medium" onClick={handleOpenModal} className="fw-bold">
+            <CHButton variant="contained" size="medium" onClick={handleOpenModal} className="fw-bold">
                 New Patient
             </CHButton>
             <Dialog open={open} onClose={handleCloseModal} maxWidth={'md'} fullWidth={true}>

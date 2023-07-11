@@ -94,7 +94,7 @@ export default function AppointmentForm({patient, formik}){
                     </div>
                 </div>
                 <div className="col-12 my-2">
-                        <LabRequestTable formik={formik}/>
+                        <LabRequestTable formik={formik} patient={patient}/>
                 </div>
             </div>
         </div>

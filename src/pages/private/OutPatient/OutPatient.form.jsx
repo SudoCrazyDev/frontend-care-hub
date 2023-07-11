@@ -40,13 +40,13 @@ export default function OutPatientForm({appointment, formik}){
                     <Divider className="fw-bold col-12 h2">LAB REQUEST</Divider>
                 </div>
                 <div className="col-12">
-                    <div className="my-2 col-12 d-flex flex-row justify-content-end">
-                        {!appointment.has_lab_request && 
+                    <div className="my-2 p-3 col-12 d-flex flex-row justify-content-end">
+                        {!formik.has_lab_request && 
                             <LabRequest type="Add" formik={formik}/>
                         }
                     </div>
                     <div className="p-3">
-                        <OutPatientLabRequest appointment={appointment} />
+                        <OutPatientLabRequest appointment={appointment} formik={formik}/>
                     </div>
                 </div>
             </div>

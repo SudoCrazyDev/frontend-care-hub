@@ -1,11 +1,8 @@
-import { Button, Divider, TextField, Tooltip } from "@mui/material";
-import AppointmentModal from "./Appointment.modal";
+import { Divider, TextField } from "@mui/material";
 import FluentTable from "../../../components/FluentTable/FluentTable";
 import FluentTableHeader from "../../../components/FluentTable/components/FluentTable.Header";
 import FluentTableBody from "../../../components/FluentTable/components/FluentTable.Body";
 import FluentTableRow from "../../../components/FluentTable/components/FluentTable.Row";
-import { CHTableIconButton } from "../../../components/CHButtons/CareHubButtons";
-import TopicIcon from '@mui/icons-material/Topic';
 import { GetPatients } from "../../../helpers/HelperRedux";
 import { FilterTextInput } from "../../../components/CHInputs/CareHubInputs";
 import { CHDatePicker } from "../../../components/CHInputs/CareHubInputs";
@@ -15,12 +12,11 @@ import { GetStatusBadge } from "../../../helpers/HelperFunctions";
 import CancelAppointment from "../PatientData/components/Appointments/CancelAppointment";
 import ViewAppointment from "../PatientData/components/Appointments/ViewAppointment";
 import OutPatientModal from "../OutPatient/OutPatient";
+import ViewOutPatientResult from "../PatientData/components/Appointments/ViewAppointment.OutPatient";
 
 export default function Appointments(){
     const [appointments, setAppointments] = useState([]);
     const [filterDate, setFilterDate] = useState(new Date().toLocaleDateString('en-CA'));
-    const [filterPatient, setFilterPatient] = useState('');
-    const patients = GetPatients();
 
     const handleFetchAppointments = () => {
         axios.get('appointments/get_all_appointments')
@@ -34,7 +30,7 @@ export default function Appointments(){
     };
 
     const filteredAppointments = useMemo(()=>{
-        return appointments?.filter(appointment => {
+        return appointments.filter(appointment => {
             return appointment.consultation_date === filterDate;
         });
     },[appointments,filterDate]);
@@ -69,31 +65,37 @@ export default function Appointments(){
                                 <FluentTableHeader>
                                     <tr>
                                         <th width={'1%'}>#</th>
-                                        <th>Patient</th>
-                                        <th>Lab Request</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th>PATIENT</th>
+                                        <th>LABORATORY REQUEST</th>
+                                        <th>STATUS</th>
+                                        <th></th>
                                     </tr>
                                 </FluentTableHeader>
                                 <FluentTableBody>
+                                    {filteredAppointments.length === 0 && (
+                                        <FluentTableRow>
+                                            <td colSpan={5} className="fw-bold">NO APPOINTMENTS FOR TODAY</td>
+                                        </FluentTableRow>
+                                    )}
                                     {filteredAppointments.map((appointment, index) => (
                                         <FluentTableRow key={index}>
                                             <td>{index + 1}</td>
-                                            <td className="fw-bolder text-uppercase">{appointment.patient.firstname} {appointment.patient.lastname}</td>
-                                            <td>{
+                                            <td className="align-middle fw-bolder text-uppercase">{appointment.patient.firstname} {appointment.patient.lastname}</td>
+                                            <td className="align-middle h5">{
                                                 appointment.has_lab_request ?
                                                 <span className="badge bg-success">Yes</span>
                                                 :
                                                 <span className="badge bg-danger">No</span>
                                                 }
                                             </td>
-                                            <td>
+                                            <td className="align-middle h5">
                                                 {GetStatusBadge(appointment.status)}
                                             </td>
                                             <td>
-                                                <OutPatientModal appointment={appointment}/>
+                                                {appointment.status === 'pending' && <OutPatientModal appointment={appointment} setAppointments={setAppointments}/>}
+                                                {appointment.status === 'complete' && <ViewOutPatientResult appointment={appointment}/>}
                                                 <ViewAppointment appointment={appointment} />
-                                                {appointment.status !== 'cancelled' && <CancelAppointment appointment={appointment} setAppointments={setAppointments}/>}
+                                                {appointment.status === 'pending' && <CancelAppointment appointment={appointment} setAppointments={setAppointments}/>}
                                             </td>
                                         </FluentTableRow>
                                     ))}
