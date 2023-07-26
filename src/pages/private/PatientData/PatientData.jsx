@@ -24,7 +24,8 @@ export default function PatientData(){
     const handleFetchPatientPhoto = () => {
         axios.get(`patients/get_patient_photo/${patientId}`)
         .then(res => {
-            setPatientPhoto(res.data);
+            let stringUrl = res.data;
+            setPatientPhoto(stringUrl.replace('storage','public/storage'));
         })
     };
 
