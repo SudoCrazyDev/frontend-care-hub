@@ -4,21 +4,34 @@ import Tab from '@mui/joy/Tab';
 import { Button, Divider } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { GetPatients } from "../../../helpers/HelperRedux";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CapitalizeFirstLetter, calculateAgeWithMonths } from "../../../helpers/HelperFunctions";
 import { PatientModel } from "../../../helpers/models/Patient.Model";
 import PatientLabRecords from "./PatientData.LabRecords";
 import PatientAppointments from "./PatientData.Appointments";
+import axios from "axios";
 
 export default function PatientData(){
     const {patientId} = useParams();
     const patients = GetPatients();
+    const [patientPhoto, setPatientPhoto] = useState("/assets/svg/maleUser.svg");
 
     const patientData = useMemo(() => {
         let foundPatient = patients.find(patient => patient.id == patientId);
         return foundPatient  || PatientModel;
     },[patients, patientId]);
     
+    const handleFetchPatientPhoto = () => {
+        axios.get(`patients/get_patient_photo/${patientId}`)
+        .then(res => {
+            setPatientPhoto(res.data);
+        })
+    };
+
+    useEffect(() => {
+        handleFetchPatientPhoto()
+    },[]);
+
     return(
         <div className="row">
             <div className="col-12 d-flex flex-row">
@@ -38,11 +51,11 @@ export default function PatientData(){
                         <h5 className="m-0 fw-bolder">{calculateAgeWithMonths(patientData.birthdate).age} years old</h5>
                     </div>
                     <div className="d-flex flex-row gap-3">
-                        <h5 className="m-0 fw-normal text-muted">LIST VIST:</h5>
+                        <h5 className="m-0 fw-normal text-muted">LAST VIST:</h5>
                         <h5 className="m-0 fw-bolder">54 Yrs, 2 Months</h5>
                     </div>
                 </div>
-                <div className="ms-auto border rounded border-light shadow-lg" style={{ height: '200px', width: '250px', background: "url('/assets/svg/maleUser.svg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', borderRadius: '10px'}}>
+                <div className="ms-auto border rounded border-light shadow-lg" style={{ height: '180px', width: '250px', background: `url('${patientPhoto}')`, backgroundSize: `${patientPhoto == '/assets/svg/maleUser.svg' ? 'contain' : 'cover'}`, borderRadius: '10px'}}>
 
                 </div>
             </div>
@@ -54,7 +67,7 @@ export default function PatientData(){
                         <Tab className="fw-bolder">LABORATORY RECORDS</Tab>
                     </TabList>
                     <PatientAppointments patientData={patientData}/>
-                    <PatientLabRecords />
+                    <PatientLabRecords patientData={patientData}/>
                 </Tabs>
             </div>
             

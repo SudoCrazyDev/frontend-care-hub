@@ -9,6 +9,7 @@ import axios from 'axios';
 const validationSchema = Yup.object().shape({
     unit: Yup.string().required('Required'),
     name: Yup.string().required('Required'),
+    brand: Yup.string().required('Required'),
 });
 
 export default function InitializeFormik(type, medicine){
@@ -50,6 +51,7 @@ export default function InitializeFormik(type, medicine){
         initialValues:{
             name: type === 'new' ? '' : medicine.name,
             unit: type === 'new' ? '' : medicine.unit,
+            brand: type === 'new' ? '' : medicine.brand,
         },
         validationSchema: validationSchema,
         onSubmit: type === 'new' ? handleSubmitNew : handleSubmitUpdate

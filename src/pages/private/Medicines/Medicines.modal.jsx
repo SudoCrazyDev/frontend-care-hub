@@ -41,10 +41,13 @@ export default function MedicineModal({type = 'new', medicine = {}}){
                     
                         <div className="form-group d-flex flex-row flex-wrap justify-content-center gap-3">
                             <div className="col-12 d-flex flex-row justify-content-center">
-                                <TextField error={Boolean(formik.touched.name && formik.errors.name)} helperText={formik.touched.name && formik.errors.name} variant="outlined" label="Name" {...formik.getFieldProps('name')}/>
+                                <TextField error={Boolean(formik.touched.name && formik.errors.name)} helperText={formik.touched.name && formik.errors.name} variant="outlined" label="Generic Name" {...formik.getFieldProps('name')}/>
                             </div>
                             <div className="col-12 d-flex flex-row justify-content-center">
                                 <TextField error={Boolean(formik.touched.unit && formik.errors.unit)} helperText={formik.touched.unit && formik.errors.unit} variant="outlined" label="Unit" {...formik.getFieldProps('unit')}/>
+                            </div>
+                            <div className="col-12 d-flex flex-row justify-content-center">
+                                <TextField error={Boolean(formik.touched.brand && formik.errors.brand)} helperText={formik.touched.brand && formik.errors.brand} variant="outlined" label="Brand" {...formik.getFieldProps('brand')}/>
                             </div>
                         </div>
                 </DialogContent>

@@ -4,13 +4,6 @@ import axios from "axios";
 import { useNotification } from "../../../helpers/CustomHooks";
 import * as yup from 'yup';
 
-const validationSchema = yup.object().shape({
-    blood_pressure: yup.string().required("Required"),
-    weight: yup.string().required("Required"),
-    heart_rate: yup.string().required("Required"),
-    temperature: yup.string().required("Required"),
-});
-
 export default function InitializeFormik(patient, setAppointments){
     const { handleNotification } = useNotification();
 
@@ -50,8 +43,14 @@ export default function InitializeFormik(patient, setAppointments){
             has_lab_request: 0,
             lab_request_id: 0,
             status: "pending",
+            patient:{
+                firstname: patient.firstname,
+                lastname: patient.lastname,
+                address: patient.address,
+                birthdate: patient.birthdate,
+                gender: patient.gender
+            }
         },
-        validationSchema: validationSchema,
         onSubmit: handleFormikSubmit,
     });
 

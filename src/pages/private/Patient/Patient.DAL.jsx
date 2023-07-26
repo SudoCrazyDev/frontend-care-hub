@@ -23,6 +23,7 @@ const initialValues = {
     religion: '',
     occupation: '',
     contact_number: '',
+    photo_url: ''
 };
 export default function InitializeFormik(){
     const dispatch = useDispatch();

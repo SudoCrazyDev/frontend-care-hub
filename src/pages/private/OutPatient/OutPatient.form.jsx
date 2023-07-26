@@ -41,7 +41,7 @@ export default function OutPatientForm({appointment, formik}){
                 </div>
                 <div className="col-12">
                     <div className="my-2 p-3 col-12 d-flex flex-row justify-content-end">
-                        {!formik.has_lab_request && 
+                        {!formik.values.has_lab_request && 
                             <LabRequest type="Add" formik={formik}/>
                         }
                     </div>

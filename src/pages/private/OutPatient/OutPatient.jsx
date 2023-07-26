@@ -15,7 +15,9 @@ export default function OutPatientModal({appointment, setAppointments}){
 
     useEffect(() => {
         if(appointment.has_lab_request){
-            formik.setFieldValue('has_lab_request', 1)
+            console.log('APPOINTMENT HAS LAB REQUEST');
+            formik.values.has_lab_request = 1;
+            // formik.setFieldValue('has_lab_request', 1);
         }
     },[]);
 
@@ -27,7 +29,6 @@ export default function OutPatientModal({appointment, setAppointments}){
         }
     }, [formik.isSubmitting]);
 
-    console.log(formik.values);
     return(
         <>
         <Tooltip title="Out Patient">

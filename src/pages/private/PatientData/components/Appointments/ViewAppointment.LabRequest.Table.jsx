@@ -37,7 +37,6 @@ export default function ViewLabRequest({appointment}){
         handleFetchLabRequest();
     },[])
 
-    console.log(appointment);
     return(
         <>
         <table className="table table-hover table-bordered">

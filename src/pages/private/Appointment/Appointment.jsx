@@ -13,6 +13,7 @@ import CancelAppointment from "../PatientData/components/Appointments/CancelAppo
 import ViewAppointment from "../PatientData/components/Appointments/ViewAppointment";
 import OutPatientModal from "../OutPatient/OutPatient";
 import ViewOutPatientResult from "../PatientData/components/Appointments/ViewAppointment.OutPatient";
+import UpdateAppointment from "./Appointment.Update";
 
 export default function Appointments(){
     const [appointments, setAppointments] = useState([]);
@@ -95,7 +96,8 @@ export default function Appointments(){
                                                 {appointment.status === 'pending' && <OutPatientModal appointment={appointment} setAppointments={setAppointments}/>}
                                                 {appointment.status === 'complete' && <ViewOutPatientResult appointment={appointment}/>}
                                                 <ViewAppointment appointment={appointment} />
-                                                {appointment.status === 'pending' && <CancelAppointment appointment={appointment} setAppointments={setAppointments}/>}
+                                                <UpdateAppointment appointment={appointment} setAppointments={setAppointments}/>
+                                                {/* {appointment.status === 'pending' && <CancelAppointment appointment={appointment} setAppointments={setAppointments}/>} */}
                                             </td>
                                         </FluentTableRow>
                                     ))}
