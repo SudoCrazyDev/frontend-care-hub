@@ -33,7 +33,7 @@ export default function AddLaboratoryResult({patientData, setLabResults}){
                         <AddLabRequestForm formik={formik} />
                     </DialogContent>
                     <DialogActions className="p-2">
-                        <Button variant="contained" color="primary" type="submit" disabled={formik.isSubmitting}>
+                        <Button variant="contained" color="primary" type="submit" disabled={formik.isSubmitting || formik.values.files.length === 0}>
                             Save {submittingLoading(formik)}
                         </Button>
                         <Button variant="contained" color="error" onClick={() => handleOpenModal()}>

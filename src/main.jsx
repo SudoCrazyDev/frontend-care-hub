@@ -4,6 +4,9 @@ import App from './App'
 import { Provider } from 'react-redux';
 import store, {persistor} from './redux/store';
 import { PersistGate } from "redux-persist/integration/react";
+import axios from 'axios';
+
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

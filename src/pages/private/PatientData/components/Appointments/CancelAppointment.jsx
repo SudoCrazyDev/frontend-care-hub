@@ -16,11 +16,11 @@ export default function CancelAppointment({appointment, setAppointments}){
 
     const handleSubmit = () => {
         setFormik({isSubmitting: true});
-        console.log(appointment);
-        axios.put(`appointments/cancel_appointment/${appointment.id}`, {patient_id: appointment.patient_id})
+        axios.put(`appointments/cancel_appointment/${appointment.id}`, {patient_id: appointment.patient_id, current_date: new Date().toLocaleDateString('en-CA')})
         .then(res => {
+            console.log(res);
             handleNotification('success', 'Appointment Cancelled');
-            setAppointments(res.data.appointments);
+            setAppointments(res.data);
             setTimeout(()=>{
                 setOpen(!open)
             },1500);

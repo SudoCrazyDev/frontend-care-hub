@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import FluentTable from '../../../components/FluentTable/FluentTable';
 import FluentTableHeader from '../../../components/FluentTable/components/FluentTable.Header';
 import FluentTableBody from '../../../components/FluentTable/components/FluentTable.Body';
@@ -14,20 +14,11 @@ import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLinks, setPatients } from '../../../redux/slicers/patientsSlice';
 import PatientLookup from './Patient.table.lookup';
+import PatientUpdateModal from './Patient.Update.Modal';
 
 export default function PatientTable(){
     const patients = GetPatients();
-    const links = GetPatientPaginationLinks();
     const { loading } = useSelector(state => state.patients);
-    const dispatch = useDispatch();
-
-    const handleLinkClick = (link) => {
-        Axios.get(link)
-        .then(res => {
-            dispatch(setPatients(res.data.data))
-            dispatch(setLinks(res.data.links))
-        })
-    };
 
     return(
         <div className="d-flex flex-row flex-wrap">
@@ -65,21 +56,12 @@ export default function PatientTable(){
                                             </CHTableIconButton>
                                         </NavLink>
                                     </Tooltip>
-                                    <Tooltip title="Create an Appointment">
-                                        <NavLink to={`/patients/${patient.id}`}>
-                                            <CHTableIconButton size="small">
-                                                <PostAddIcon className="ch-primary"/>
-                                            </CHTableIconButton>
-                                        </NavLink>
-                                    </Tooltip>
+                                    <PatientUpdateModal patient={patient}/>
                                 </td>
                             </FluentTableRow>
                         ))}
                     </FluentTableBody>
                 </FluentTable>
-            </div>
-            <div className="d-flex flex-row">
-                <FluentTablePagination links={links} onLinkClick={handleLinkClick}/>
             </div>
         </div>
     );

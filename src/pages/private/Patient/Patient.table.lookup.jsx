@@ -23,18 +23,16 @@ export default function PatientLookup(){
         }
 
         setKeyword(event.target.value);
-    };
-
-    const handleClear = () => {
-        setClearable(false);
-        setKeyword('');
-        dispatch(setPatients(initialPatients))
+        
+        if(event.target.value === ''){
+            dispatch(setPatients(initialPatients))
+        }
     };
 
     const handleSearch = () => {
         setClearable(true);
         if(keyword === ''){
-            setIsError(true);
+            dispatch(setPatients(initialPatients))
             return
         }
         dispatch(setLoading(true));
@@ -47,6 +45,12 @@ export default function PatientLookup(){
         })
     };
 
+    const handleKeyPressEnter = (event) => {
+        if(event.key === 'Enter'){
+            handleSearch();
+        }
+    };
+    
     return(
         <TextField
             error={isError}
@@ -58,11 +62,7 @@ export default function PatientLookup(){
             label="Patient Name"
             value={keyword}
             onChange={handleChange}
-            InputProps={{
-                endAdornment: <InputAdornment position="end">
-                    {clearable ? <ClearIcon onClick={handleClear}/> : <SearchIcon onClick={handleSearch}/>}
-                </InputAdornment>,
-            }}
+            onKeyDown={handleKeyPressEnter}
         />
     )
 }

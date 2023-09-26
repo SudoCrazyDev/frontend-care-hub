@@ -1,86 +1,132 @@
-import { Divider, TextField } from "@mui/material";
-import React from "react";
-import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
-import ThermostatIcon from '@mui/icons-material/Thermostat';
-import ScaleIcon from '@mui/icons-material/Scale';
-import BloodtypeIcon from '@mui/icons-material/Bloodtype';
-import LabRequest from "../PatientData/components/LabRequest/LabRequest";
-import OutPatientMedicines from "./OutPatient.Medicines";
-import OutPatientLabRequest from "./OutPatient.LabRequest";
+import { InputAdornment, InputLabel, TextField } from "@mui/material";
+import TabsPricingExample from "./components/Tabs";
+import { calculateAgeWithMonths } from "../../../helpers/HelperFunctions";
 
-export default function OutPatientForm({appointment, formik}){
-
+export default function OutPatientContent({formik, appointment}){
+    
     return(
-        <div className="form-group d-flex flex-row flex-wrap">
-            <div className="col-6 my-2 d-flex flex-row flex-wrap">
-                <div className="col-12">
-                    <Divider className="fw-bold h2">VITAL STATS</Divider>
-                </div>
-                <div className="d-flex flex-row flex-wrap w-100 justify-content-center align-items-center">
-                    <div className="col-12 d-flex flex-row justify-content-center gap-5">
-                        <TextField variant="outlined" label="Heart Rate" value={appointment.heart_rate} InputLabelProps={{ shrink: true}} InputProps={{ endAdornment:(<MonitorHeartIcon />), readOnly: true}}/>
-                        <TextField variant="outlined" label="Temperature" value={appointment.temperature} InputLabelProps={{ shrink: true}} InputProps={{endAdornment:(<ThermostatIcon />), readOnly: true}}/>
+        <div className="d-flex flex-row flex-wrap">
+            <div className="col-4 p-2">
+                <div className="d-flex flex-row flex-wrap">
+                    <div className="col-md-12 col-lg-6 p-2">
+                        <InputLabel className='text-dark fw-bold'>Blood Pressure</InputLabel>
+                        <TextField 
+                            variant='outlined' 
+                            fullWidth
+                            value={appointment.blood_pressure}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    mmhg
+                                </InputAdornment>
+                            }}
+                        />
                     </div>
-                    <div className="col-12 d-flex flex-row justify-content-center gap-5">
-                        <TextField variant="outlined" label="Weight" value={appointment.weight} InputLabelProps={{ shrink: true}} InputProps={{endAdornment:(<ScaleIcon />), readOnly: true}}/>
-                        <TextField variant="outlined" label="Blood Pressure" value={appointment.blood_pressure} InputLabelProps={{ shrink: true}} InputProps={{endAdornment:(<BloodtypeIcon />), readOnly: true}}/>
+                    <div className="col-md-12 col-lg-6 p-2">
+                        <InputLabel className='text-dark fw-bold'>Temperature</InputLabel>
+                        <TextField 
+                            variant='outlined' 
+                            fullWidth
+                            value={appointment.temperature}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    °C
+                                </InputAdornment>
+                            }}
+                        />
+                    </div>
+                    <div className="col-md-12 col-lg-6 p-2">
+                        <InputLabel className='text-dark fw-bold'>Heart Rate</InputLabel>
+                        <TextField 
+                            variant='outlined' 
+                            fullWidth
+                            value={appointment.heart_rate}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    bpm
+                                </InputAdornment>
+                            }}
+                        />
+                    </div>
+                    <div className="col-md-12 col-lg-6 p-2">
+                        <InputLabel className='text-dark fw-bold'>Weight</InputLabel>
+                        <TextField 
+                            variant='outlined' 
+                            fullWidth
+                            value={appointment.weight}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    kg
+                                </InputAdornment>
+                            }}
+                        />
                     </div>
                 </div>
             </div>
-            <div className="col-6 my-2 d-flex flex-row flex-wrap">
-                <div className="col-12">
-                    <Divider className="fw-bold col-12 h2">CHIEF COMPLAINT</Divider>
-                </div>
-                <div className="col-12 d-flex flex-row justify-content-center gap-4">
-                    <TextField variant='outlined' fullWidth={true} multiline rows={5} value={appointment.chief_complaint || ""} InputProps={{readOnly: true}}/>
-                </div>
-            </div>
-            <div className="col-6 d-flex flex-row flex-wrap">
-                <div className="col-12">
-                    <Divider className="fw-bold col-12 h2">LAB REQUEST</Divider>
-                </div>
-                <div className="col-12">
-                    <div className="my-2 p-3 col-12 d-flex flex-row justify-content-end">
-                        {!formik.values.has_lab_request && 
-                            <LabRequest type="Add" formik={formik}/>
-                        }
-                    </div>
-                    <div className="p-3">
-                        <OutPatientLabRequest appointment={appointment} formik={formik}/>
+            <div className="col-3 p-2">
+                <div className="d-flex flex-row flex-wrap">
+                    <div className="col-12 p-2">
+                        <InputLabel className='text-dark fw-bold'>Chief Complaint</InputLabel>
+                        <TextField 
+                            variant='outlined' 
+                            fullWidth
+                            multiline
+                            value={appointment.chief_complaint === null ? '' : appointment.chief_complaint}
+                            rows={5}
+                        />
                     </div>
                 </div>
             </div>
-            <div className="col-6 d-flex flex-row flex-wrap">
-                <div className="col-12">
-                    <Divider className="fw-bold col-12 h2">SIGNIFICANT FINDINGS/REMARKS</Divider>
-                </div>
-                <div className="col-12 d-flex flex-row justify-content-center gap-4">
-                    <TextField variant='outlined' fullWidth={true} multiline rows={5} {...formik.getFieldProps("significant_findings")}/>
+            <div className="col-5 p-2">
+                <div className="d-flex flex-row flex-wrap">
+                    <div className="col-6 p-2">
+                        <InputLabel className='text-dark fw-bold'>Patient Name</InputLabel>
+                        <TextField 
+                            variant='outlined' 
+                            fullWidth
+                            InputProps={{
+                                className: 'fw-bolder'
+                            }}
+                            value={`${appointment.patient.lastname}, ${appointment.patient.firstname}`}
+                        />
+                    </div>
+                    <div className="col-6 p-2">
+                        <InputLabel className='text-dark fw-bold'>Occupation</InputLabel>
+                        <TextField 
+                            variant='outlined' 
+                            fullWidth
+                            InputProps={{
+                                className: 'fw-bolder'
+                            }}
+                            value={`${appointment.patient.occupation}`}
+                        />
+                    </div>
+                    <div className="col-md-12 col-lg-6 p-2">
+                        <InputLabel className='text-dark fw-bold'>Age</InputLabel>
+                        <TextField 
+                            variant='outlined' 
+                            fullWidth
+                            InputProps={{
+                                className: 'fw-bolder'
+                            }}
+                            value={`${calculateAgeWithMonths(appointment.patient.birthdate).age} YRS OLD`}
+                        />
+                    </div>
+                    <div className="col-md-12 col-lg-6 p-2">
+                        <InputLabel className='text-dark fw-bold'>Gender</InputLabel>
+                        <TextField 
+                            variant='outlined'
+                            fullWidth
+                            value={`${String(appointment.patient.gender).toLocaleUpperCase()}`}
+                            InputProps={{
+                                className: 'fw-bolder'
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
-            <div className="col-6 d-flex flex-row flex-wrap">
-                <div className="col-12">
-                    <Divider className="fw-bold col-12 h2">MEDICINES</Divider>
-                </div>
-                <div className="col-12">
-                    <OutPatientMedicines formik={formik}/>
-                </div>
-            </div>
-            <div className="col-6 d-flex flex-row flex-wrap justify-content-start align-items-start">
-                <div className="col-12">
-                    <Divider className="fw-bold col-12 h2">Billing Info</Divider>
-                </div>
-                <div className="col-12 d-flex flex-row flex-wrap p-5 gap-2">
-                    <div className="col-12">
-                        <h5 className="m-0 fw-bold">
-                            Professional Fee:
-                        </h5>
-                    </div>
-                    <div className="col-12">
-                        <TextField variant="outlined" fullWidth={true} placeholder="0.00" type="number" {...formik.getFieldProps("professional_fee")}/>
-                    </div>
-                </div>
+            <div className="col-12 p-2">
+                <TabsPricingExample formik={formik} appointment={appointment}/>
             </div>
         </div>
     );
-};
+}

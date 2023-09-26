@@ -19,7 +19,7 @@ export default function AppointmentModal({patientData, setAppointments}){
     };
 
     useEffect(()=>{
-        if(!formik.isSubmitting){
+        if(formik.isSubmitting === false){
             formik.resetForm();
             setTimeout(()=>{setOpen(false)}, 1500);
         }
@@ -30,7 +30,7 @@ export default function AppointmentModal({patientData, setAppointments}){
         <CHButton variant="contained" color="primary" className="fw-bold" onClick={handleOpenModal}>New Appointment</CHButton>
         <Dialog open={open} maxWidth="md" fullWidth={true} scroll="paper">
             <DialogTitle>New Appointment</DialogTitle>
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={(e) => {e.preventDefault(); formik.handleSubmit()}}>
                 <DialogContent dividers={true}>
                     <AppointmentForm formik={formik} patient={patientData}/>
                 </DialogContent>

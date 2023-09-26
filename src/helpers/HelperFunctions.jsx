@@ -2,6 +2,9 @@ import React from "react";
 import CircularProgress from '@mui/joy/CircularProgress';
 
 function calculateAgeWithMonths(birthday) {
+  if(birthday === null || birthday === ''){
+    return 'NO AGE';
+  }
   const birthdayDate = new Date(birthday);
   const age = new Date().getFullYear() - birthdayDate.getFullYear();
   const months = new Date().getMonth() - birthdayDate.getMonth();

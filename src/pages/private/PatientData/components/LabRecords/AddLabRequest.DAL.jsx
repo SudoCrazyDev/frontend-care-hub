@@ -6,9 +6,6 @@ export default function InitializeFormik(patientData, setLabResults){
     const { handleNotification } = useNotification();
 
     const handleSubmit = (values) => {
-        
-        values['lab_request'].blood_chemistry = JSON.stringify(values["lab_request"].blood_chemistry)
-        values['lab_request'].xray = JSON.stringify(values["lab_request"].xray);
 
         let newForm = new FormData();
         newForm.append('lab_request', JSON.stringify(values['lab_request']));
@@ -36,7 +33,8 @@ export default function InitializeFormik(patientData, setLabResults){
     const formik = useFormik({
         initialValues:{
             patient_id: patientData.id,
-            result_date: new Date().toLocaleDateString('en-CA')
+            result_date: new Date().toLocaleDateString('en-CA'),
+            files: []
         },
         onSubmit: handleSubmit
     });

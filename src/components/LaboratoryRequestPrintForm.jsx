@@ -13,7 +13,7 @@ Font.register({
 
 const styles = StyleSheet.create({
     page: {
-      padding: '5px',
+      marginTop: '25px',
       fontFamily: 'Ubuntu',
       transform: 'rotate(360deg)',
       display: 'flex',
@@ -62,6 +62,10 @@ const styles = StyleSheet.create({
     patientInfo1:{
         fontSize: 8,
     },
+    docInfo1:{
+        fontSize: 15,
+        fontWeight: "extrabold"
+    },
     labRequestSectionHeader:{
         display: 'flex',
         flexDirection: 'row',
@@ -74,10 +78,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
     },
     labRequestTitle:{
-        fontSize: 15,
+        fontSize: 25,
         fontWeight: 'bold'
     },
     bloodChemistrySection:{
@@ -88,8 +92,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     bloodChemistryTitle:{
-        fontSize: 7,
-        width: '33.33333333%'
+        fontSize: 13,
+        width: '33.33333333%',
+        marginTop: '2px',
+        marginBottom: '2px'
     },
     xrayExaminationSection:{
         display: 'flex',
@@ -103,14 +109,15 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function LaboRatoryRequestPrintForm({formik, appointment, patient}){
+export default function LaboRatoryRequestPrintForm({appointment}){
+    console.log(appointment);
     return(
         <Document>
-            <Page size="A4" orientation="portrait" style={styles.page}>
+            <Page size="A5" style={styles.page}>
                 <View style={styles.halfPage1}>
                     <View style={styles.headingSection}>
                         <Text>
-                            <Image src={"/assets/png/kidney_480px.png"}/> 
+                            <Image src={"/assets/png/company_logo.png"}/> 
                             Natividad M. Torre, M.D.
                         </Text>
                         <Text style={styles.smallFont}>INTERNAL MEDICINE</Text>
@@ -147,37 +154,25 @@ export default function LaboRatoryRequestPrintForm({formik, appointment, patient
                                 <Text style={styles.patientInfo1}>Age/Sex: {calculateAgeWithMonths(appointment.patient.birthdate).age}yrs Old / {appointment.patient.gender}</Text>
                             </View>
                     </View>
-                    <View style={styles.labRequestSectionHeader}>
-                        <Text style={styles.labRequestTitle}>LABORATORY REQUESTS</Text>
-                    </View>
-                    <View style={styles.labRequestSection}>
-                        <Text>{`${Boolean(parseInt(appointment.laboratory.cbc)) ? ' _X_' : '___'}`} CBC </Text>
-                        <Text>{`${Boolean(parseInt(appointment.laboratory.urinalysis)) ? ' _X_' : '___'}`} URINALYSIS </Text>
-                        <Text>{`${Boolean(parseInt(appointment.laboratory.stool_exam)) ? ' _X_' : '___'}`} STOOL EXAM </Text>
-                    </View>
-                    <View style={styles.labRequestSectionHeader}>
-                        <Text style={styles.labRequestTitle}>BLOOD CHEMISTRY</Text>
-                    </View>
-                    <View style={styles.xrayExaminationSection}>
-                        {JSON.parse(appointment.laboratory.blood_chemistry).map((cbc, index) => (
-                            <Text key={index} style={styles.bloodChemistryTitle}> {`${cbc.value ? ' _x_ ' : ' ___ '} ${cbc.title}`} </Text>
-                        ))}
-                    </View>
-                    <View style={styles.labRequestSectionHeader}>
-                        <Text style={styles.labRequestTitle}>X-RAY EXAMINATION</Text>
-                    </View>
-                    <View style={styles.bloodChemistrySection}>
-                        {JSON.parse(appointment.laboratory.xray).map((xray, index) => (
-                            <Text key={index} style={styles.xrayExaminiationTitle}> {`${xray.value ? ' _x_ ' : ' ___ '} ${xray.title}`} </Text>
-                        ))}
-                    </View>
+                    {appointment.lab_request.map((section, index) => (
+                        <React.Fragment key={index}>
+                            <View style={styles.labRequestSectionHeader}>
+                                <Text style={styles.labRequestTitle}>{section.title}</Text>
+                            </View>
+                            <View style={styles.labRequestSection}>
+                                {section.value.map((sectionValue, index) => (
+                                    <Text style={styles.bloodChemistryTitle} key={index}>{`${sectionValue.value ? ' _X_' : '___'}`} {sectionValue.title} </Text>
+                                ))}
+                            </View>
+                        </React.Fragment>
+                    ))}
                     <View style={styles.patientInfo}>
                             <View>
                                 <Text style={styles.divider}></Text>
-                                <Text style={styles.patientInfo1}>NATIVIDAD M. TORRE, M.D.</Text>
-                                <Text style={styles.patientInfo1}>License No.: 0077811</Text>
-                                <Text style={styles.patientInfo1}>PTR No.: 0525578A</Text>
-                                <Text style={styles.patientInfo1}>S2 No.: 010505RM21-044-M</Text>
+                                <Text style={styles.docInfo1}>NATIVIDAD M. TORRE, M.D.</Text>
+                                <Text style={styles.docInfo1}>License No.: 0077811</Text>
+                                <Text style={styles.docInfo1}>PTR No.: 0525578A</Text>
+                                <Text style={styles.docInfo1}>S2 No.: 010505RM21-044-M</Text>
                             </View>
                     </View>
                 </View>

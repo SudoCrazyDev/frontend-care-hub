@@ -45,23 +45,14 @@ export default function PatientForm({formik}){
                     {...formik.getFieldProps('lastname')}/>
                 </div>
                 <div className="col-md-12 col-lg-6 my-2">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                        label="birthdate"
-                        sx={{
-                            width: "100%",
-                        }}
-                        id="birthdate"
-                        onChange={(date)=>formik.setFieldValue('birthdate', new Date(date.$d).toISOString().slice(0, 19).replace('T', ' '))}
-                        renderInput={(params) => (
-                            <TextField 
-                                fullWidth={true}
-                                label="birthdate"
-                                {...formik.getFieldProps('birthdate')}
-                            />
-                        )}
-                        />
-                    </LocalizationProvider>
+                    <TextField
+                    className="text-capitalize"
+                    variant="outlined"
+                    label="Birthday"
+                    fullWidth={true}
+                    type="date"
+                    InputLabelProps={{shrink: true}}
+                    {...formik.getFieldProps('birthdate')}/>
                 </div>
                 <div className="col-12">
                     <TextField
@@ -73,17 +64,17 @@ export default function PatientForm({formik}){
                 </div>
                 <div className="col-md-12 col-lg-6 my-2">
                     <InputLabel>Gender</InputLabel>
-                    <Select fullWidth={true} label="Gender" {...formik.getFieldProps('gender')}>
+                    <Select fullWidth={true} {...formik.getFieldProps('gender')}>
                         <MenuItem value="male">MALE</MenuItem>
                         <MenuItem value="female">FEMALE</MenuItem>
                     </Select>
                 </div>
                 <div className="col-md-12 col-lg-6 my-2">
                     <InputLabel>Civil Status</InputLabel>
-                    <Select fullWidth={true} label="Civil Status" {...formik.getFieldProps('civil_status')}>
+                    <Select fullWidth={true} {...formik.getFieldProps('civil_status')}>
                         <MenuItem value="single">SINGLE</MenuItem>
                         <MenuItem value="married">MARRIED</MenuItem>
-                        <MenuItem value="widowed">WIDOWED</MenuItem>
+                        <MenuItem value="widowed">WIDOW/WIDOWER</MenuItem>
                     </Select>
                 </div>
                 <div className="col-md-12 col-lg-6 my-2">

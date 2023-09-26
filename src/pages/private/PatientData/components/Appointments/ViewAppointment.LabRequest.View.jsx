@@ -20,36 +20,26 @@ export default function LabRequestView({labRequest}){
             <DialogTitle>View Lab Request</DialogTitle>
             <DialogContent>
                 <div className="d-flex flex-row flex-wrap">
-                    <div className="col-12">
-                        <h5 className="m-0 text-dark fw-bolder">Lab Requests</h5>
+                {labRequest.map((section, index) => (
+                    <React.Fragment key={index}>
+                    <div className="col-12 my-2 d-flex flex-row">
+                        <h4 className="m-0 text-dark fw-bolder">{section.title}</h4>
                     </div>
-                    <div className="col-12 d-flex flex-row justify-content-center">
-                        <FormControlLabel control={<Checkbox checked={Boolean(parseInt(labRequest.cbc))}/>} label="CBC" />
-                        <FormControlLabel control={<Checkbox checked={Boolean(parseInt(labRequest.urinalysis))}/>} label="Urinalysis" />
-                        <FormControlLabel control={<Checkbox checked={Boolean(parseInt(labRequest.stool_exam))}/>} label="Stool Exam" />
-                    </div>
-                    <div className="col-12">
-                        <Divider />
-                    </div>
-                    <div className="col-12 my-2 d-flex flex-row align-items-center">
-                        <h5 className="m-0 text-dark fw-bolder">Blood Chemistry</h5>
-                    </div>
-                    <div className="ps-2 col-12 d-flex flex-row flex-wrap justify-content-around">
-                        {JSON.parse(labRequest.blood_chemistry).map((item, index) => (
-                            <FormControlLabel className="col-3" key={index} control={<Checkbox checked={Boolean(item.value)}/>} label={item.title} />
-                        ))}
+                    <div className="ps-2 col-12 d-flex flex-row flex-wrap justify-content-between">
+                        {section.value.map((value, sectionValueIndex) => (
+                            <FormControlLabel 
+                                key={sectionValueIndex}
+                                className="col-3"
+                                control={<Checkbox checked={value.value} />} 
+                                label={`${value.title}`}
+                            />
+                            ))}
                     </div>
                     <div className="col-12">
                         <Divider />
                     </div>
-                    <div className="col-12 my-2">
-                        <h5 className="m-0 text-dark fw-bolder">X-Ray Examination</h5>
-                    </div>
-                    <div className="col-12 d-flex flex-row flex-wrap justify-content-around">
-                        {JSON.parse(labRequest.xray).map((item, index) => (
-                            <FormControlLabel className="col-4" key={index} control={<Checkbox checked={Boolean(item.value)}/>} label={item.title} />
-                        ))}
-                    </div>
+                    </React.Fragment>
+                ))}
                 </div>
             </DialogContent>
             <Divider />

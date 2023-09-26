@@ -1,51 +1,43 @@
-import React, { useEffect, useState } from "react";
-import OutputIcon from '@mui/icons-material/Output';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip } from "@mui/material";
-import OutPatientForm from "./OutPatient.form";
-import InitializeFormik from "./OutPatient.DAL";
-import { submittingLoading } from "../../../helpers/HelperFunctions";
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+import { useEffect, useState } from "react";
+import OutPatientContent from "./OutPatient.form";
+import InitializeFormik from "./components/OutPatient.DAL";
 
-export default function OutPatientModal({appointment, setAppointments}){
-    const formik = InitializeFormik(appointment, setAppointments);
+export default function OutPatient({appointment, setAppointments}){
     const [open, setOpen] = useState(false);
-
-    const handleModalOpen = () => {
+    const formik = InitializeFormik(appointment, setAppointments);
+    
+    const handleClickModal = () => {
         setOpen(!open);
     };
-
+    
     useEffect(() => {
-        if(appointment.has_lab_request){
-            console.log('APPOINTMENT HAS LAB REQUEST');
-            formik.values.has_lab_request = 1;
-            // formik.setFieldValue('has_lab_request', 1);
-        }
-    },[]);
-
-    useEffect(() => {
-        if(!formik.isSubmitting)
-        {
+        if(!formik.isSubmitting){
             formik.resetForm();
-            setTimeout(()=>{setOpen(false)},1500);
+            setTimeout(() => {
+                setOpen(false);
+            }, 1500);
         }
-    }, [formik.isSubmitting]);
-
+    },[formik.isSubmitting]);
+    
     return(
         <>
-        <Tooltip title="Out Patient">
-            <IconButton color="primary" onClick={handleModalOpen}>
-                <OutputIcon/>
+        <Tooltip title="Cater Out-Patient">
+            <IconButton color="primary" onClick={handleClickModal}>
+                <MonitorHeartIcon />
             </IconButton>
         </Tooltip>
-        <Dialog open={open} fullScreen scroll="paper">
-            <DialogTitle className="fw-bold text-uppercase">OUT PATIENT - {`${appointment.patient.firstname} ${appointment.patient.lastname}`}</DialogTitle>
-            <form onSubmit={formik.handleSubmit}>
-            <DialogContent dividers>
-                <OutPatientForm appointment={appointment} formik={formik}/>
-            </DialogContent>
-            <DialogActions className="p-3">
-                <Button type="submit" variant="contained" color="primary" disabled={!formik.isValid || formik.isSubmitting}>Bill-Out {submittingLoading(formik)}</Button>
-                <Button variant="contained" color="error" onClick={handleModalOpen}>Cancel</Button>
-            </DialogActions>
+        <Dialog open={open} fullScreen>
+            <DialogTitle className="fw-bolder text-uppercase">Appointment - {appointment.patient.lastname}, {appointment.patient.firstname}</DialogTitle>
+            <form className="h-100" onSubmit={(e) => {e.preventDefault(); formik.handleSubmit();}}>
+                <DialogContent dividers className="h-100">
+                    <OutPatientContent formik={formik} appointment={appointment} />
+                </DialogContent>
+                <DialogActions className="p-3">
+                    <Button disabled={formik.isSubmitting} variant="contained" type="submit">Save</Button>
+                    <Button variant="contained" color="error" onClick={handleClickModal}>Cancel</Button>
+                </DialogActions>
             </form>
         </Dialog>
         </>

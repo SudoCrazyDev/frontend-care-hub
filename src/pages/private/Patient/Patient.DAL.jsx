@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { addPatient } from "../../../redux/slicers/patientsSlice";
+import { addPatient, setPatients } from "../../../redux/slicers/patientsSlice";
 import { useNotification } from "../../../helpers/CustomHooks";
 
 const patientValidationSchema = yup.object().shape({
@@ -12,23 +12,38 @@ const patientValidationSchema = yup.object().shape({
     lastname: yup.string().required("Lastname required"),
 });
 
-const initialValues = {
-    firstname: '',
-    middlename: '',
-    lastname: '',
-    birthdate: "",
-    address: '',
-    gender: 'male',
-    civil_status: 'single',
-    religion: '',
-    occupation: '',
-    contact_number: '',
-    photo_url: ''
-};
-export default function InitializeFormik(){
+export default function InitializeFormik(type, patient){
     const dispatch = useDispatch();
     const { handleNotification } = useNotification();
 
+    const initialValues = {
+        firstname: type === 'update' ? patient.firstname : '',
+        middlename: type === 'update' ? patient.middlename : '',
+        lastname: type === 'update' ? patient.lastname : '',
+        birthdate: type === 'update' ? patient.birthdate : new Date().toLocaleDateString('en-CA'),
+        address: type === 'update' ? patient.address : '',
+        gender: type === 'update' ? String(patient.gender).toLowerCase() : 'male',
+        civil_status: type === 'update' ? String(patient.civil_status).toLowerCase() : 'single',
+        religion: type === 'update' ? patient.religion : '',
+        occupation: type === 'update' ? patient.occupation : '',
+        contact_number: type === 'update' ? patient.contact_number : '',
+        photo_url: type === 'update' ? patient.photo_url : ''
+    };
+    
+    const handleUpdateSubmit = (values) => {
+        axios.put(`patients/update_patient/${patient.id}`, values)
+        .then(res => {
+            dispatch(setPatients(res.data.data));
+            handleNotification("success", "Patient Updated successfully");
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        .finally(()=>{
+            formik.setSubmitting(false);
+        })
+    };
+    
     const handleNewSubmit = (values) => {
         axios.post('patients/insert_patient', values)
         .then(res => {
@@ -46,7 +61,8 @@ export default function InitializeFormik(){
     const formik = useFormik({
         initialValues:initialValues,
         validationSchema:patientValidationSchema,
-        onSubmit: handleNewSubmit
+        enableReinitialize: true,
+        onSubmit: type === 'update' ? handleUpdateSubmit : handleNewSubmit
     });
 
     return formik;

@@ -9,9 +9,8 @@ export default function AppointmentsTable({appointments, fetching, setAppointmen
         <table className="table table-bordered shadow-lg">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Consultation Date</th>
-                    <th>Has Lab Request</th>
+                    <th width={`18%`}>Consultation Date</th>
+                    <th>Complaint</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -29,13 +28,11 @@ export default function AppointmentsTable({appointments, fetching, setAppointmen
                 )}
                 {appointments.length !== 0 && appointments.map((appointment, index) => (
                     <tr key={index}>
-                        <td>{appointment.id}</td>
-                        <td>{new Date(appointment.consultation_date).toLocaleDateString('en-CA')}</td>
-                        <td>{appointment.has_lab_request ? <span className="badge bg-success">Yes</span> : <span className="badge bg-danger">No</span>}</td>
+                        <td className="fw-bolder">{new Date(appointment.consultation_date).toLocaleDateString('en-CA')}</td>
+                        <td>{appointment.chief_complaint}</td>
                         <td>{GetStatusBadge(appointment.status)}</td>
                         <td>
                             <ViewAppointment appointment={appointment}/>
-                            {appointment.status !== 'cancelled' && <CancelAppointment appointment={appointment} setAppointments={setAppointments}/>}
                         </td>
                     </tr>
                 ))}

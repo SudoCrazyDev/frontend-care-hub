@@ -10,14 +10,15 @@ export default function InitializeFormik(patient, setAppointments){
     const handleFormikSubmit = (values) => {
 
         if(values.has_lab_request){
-            values['lab_request'].blood_chemistry = JSON.stringify(values["lab_request"].blood_chemistry)
-            values['lab_request'].xray = JSON.stringify(values["lab_request"].xray);
+            values['lab_request'] = JSON.stringify(values["lab_request"]);
         }
         
         axios.post('appointments/insert_appointment', values)
         .then(res => {
             handleNotification("success", 'Appointment created successfully');
-            setAppointments(res.data.appointments);
+            let filteredAppointments = res.data.appointments.filter(appointment => appointment.chief_complaint !== null && appointment.chief_complaint !== '');
+            let sortedByDate = filteredAppointments.sort((a,b) => new Date(b.consultation_date) - new Date(a.consultation_date));
+            setAppointments(sortedByDate);
         })
         .catch(err => {
             handleNotification("success", 'An Error Occured');
@@ -42,6 +43,7 @@ export default function InitializeFormik(patient, setAppointments){
             chief_complaint: "",
             has_lab_request: 0,
             lab_request_id: 0,
+            lab_request:[],
             status: "pending",
             patient:{
                 firstname: patient.firstname,

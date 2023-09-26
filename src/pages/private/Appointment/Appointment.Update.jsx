@@ -1,12 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputLabel, Tooltip, Divider, TextField  } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputLabel, Tooltip, Divider, TextField, InputAdornment  } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import InitializeFormik from "./Appointment.Update.DAL";
 import { submittingLoading } from "../../../helpers/HelperFunctions";
 import ViewLabRequest from "../PatientData/components/Appointments/ViewAppointment.LabRequest.Table";
-import LabRequest from "../PatientData/components/LabRequest/LabRequest";
-import LabRequestTable from "./Appointment.LabReq.Table";
 
 export default function UpdateAppointment({appointment, setAppointments}){
     const [open, setOpen] = useState(false);
@@ -70,6 +68,11 @@ export default function UpdateAppointment({appointment, setAppointments}){
                                     variant='outlined'
                                     fullWidth={true}
                                     {...formik.getFieldProps('blood_pressure')}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                            mmhg
+                                        </InputAdornment>
+                                    }}
                                 />
                             </div>
                             <div className="col-md-12 col-lg-6">
@@ -78,6 +81,11 @@ export default function UpdateAppointment({appointment, setAppointments}){
                                     variant='outlined' 
                                     fullWidth={true}
                                     {...formik.getFieldProps('temperature')}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                            °C
+                                        </InputAdornment>
+                                    }}
                                 />
                             </div>
                             <div className="col-md-12 col-lg-6">
@@ -86,6 +94,11 @@ export default function UpdateAppointment({appointment, setAppointments}){
                                     variant='outlined'
                                     fullWidth={true}
                                     {...formik.getFieldProps('heart_rate')}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                            bpm
+                                        </InputAdornment>
+                                    }}
                                 />
                             </div>
                             <div className="col-md-12 col-lg-6">
@@ -94,6 +107,11 @@ export default function UpdateAppointment({appointment, setAppointments}){
                                     variant='outlined'
                                     fullWidth={true}
                                     {...formik.getFieldProps('weight')}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">
+                                            kg
+                                        </InputAdornment>
+                                    }}
                                 />
                             </div>
                             <Divider className="my-2"/>
@@ -104,25 +122,10 @@ export default function UpdateAppointment({appointment, setAppointments}){
                                 <TextField 
                                     variant='outlined'
                                     fullWidth={true}
-                                    multiline rows={5}
+                                    multiline 
+                                    rows={5}
                                     {...formik.getFieldProps('chief_complaint')}
                                 />
-                            </div>
-                            <Divider className="my-2"/>
-                            <div className="col-12 d-flex flex-row my-2">
-                                <h2 className="fw-bold m-0">LAB REQUEST</h2>
-                                <div className="ms-auto">
-                                {!formik.has_lab_request && (
-                                    <LabRequest patient={appointment.patient} formik={formik} type={'Add'} />
-                                )}
-                                </div>
-                            </div>
-                            <div className="col-12 my-2">
-                                {appointment.has_lab_request ?
-                                    <ViewLabRequest appointment={appointment} />
-                                :
-                                    null
-                                }
                             </div>
                         </div>
                     </div>

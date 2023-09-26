@@ -4,18 +4,19 @@ import { GetStatusBadge } from "../../../../../helpers/HelperFunctions";
 import LabRequestResultUpload from "./ViewAppointment.LabRequest.Upload";
 import LabRequestView from "./ViewAppointment.LabRequest.View";
 import axios from "axios";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import LaboRatoryRequestPrintForm from "../../../../../components/LaboratoryRequestPrintForm";
 import { PDFDownloadLink} from '@react-pdf/renderer';
 import PrintIcon from '@mui/icons-material/Print';
+import ViewLabRequest from "../LabRecords/PatientData.LabRecords.ViewResult";
 
-export default function ViewLabRequest({appointment}){
+export default function ViewLabRequestTable({current_appointment}){
     const [labRequest, setLabRequest] = useState({blood_chemistry: "[]", xray: "[]"});
+    const [appointment, setAppointment] = useState([]);
     const [fetching, setFetching] = useState(false);
-
+    
     const handleFetchLabRequest = () => {
         setFetching(true);
-        axios.get(`appointments/get_appointment_lab_request/${appointment.id}`)
+        axios.get(`appointments/get_appointment_lab_request/${current_appointment.id}`)
         .then(res => {
             setLabRequest(res.data);
         })
@@ -27,15 +28,23 @@ export default function ViewLabRequest({appointment}){
         })
     };
 
-    const handleViewLabResult = () => {
-        let properUrl = labRequest.result_url.replace("public", "storage");
-        // window.open(`http://localhost:8000/${properUrl}`, "_blank");
-        window.open(`https://carehubapi.harayadevstudio.tech/${properUrl}`, "_blank");
-    };
-
     useEffect(() => {
         handleFetchLabRequest();
     },[])
+
+    useEffect(() => {
+        setAppointment({
+            patient:{
+                firstname: current_appointment.patient.firstname,
+                lastname: current_appointment.patient.lastname,
+                address: current_appointment.patient.address,
+                birthdate: current_appointment.patient.birthdate,
+                gender: current_appointment.patient.gender
+            },
+            has_lab_request: current_appointment.has_lab_request,
+            lab_request: current_appointment.has_lab_request ? JSON.parse(current_appointment.laboratory.form_details) : null,
+        })
+    },[]);
 
     return(
         <>
@@ -60,20 +69,16 @@ export default function ViewLabRequest({appointment}){
                             <td className="fw-bold" width={'50%'}>{labRequest.id}</td>
                             <td>{GetStatusBadge(labRequest.status)}</td>
                             <td>
-                               <LabRequestView labRequest={labRequest} />
+                               <LabRequestView labRequest={JSON.parse(current_appointment.laboratory.form_details)} />
                                {
                                 labRequest.result_url === null && (
-                                    <LabRequestResultUpload laboratory={labRequest} setLabRequest={setLabRequest}/>
+                                    <LabRequestResultUpload laboratory={current_appointment.laboratory} setLabRequest={setLabRequest}/>
                                    )
                                }
                                {labRequest.result_url !== null && (
-                                <Tooltip title="View Result">
-                                    <IconButton color="primary" onClick={handleViewLabResult}>
-                                            <RemoveRedEyeIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                 <ViewLabRequest results={current_appointment.laboratory} />
                                )}
-                               <PDFDownloadLink document={<LaboRatoryRequestPrintForm appointment={appointment}/>} fileName="LabRequestForm.pdf">
+                               <PDFDownloadLink document={<LaboRatoryRequestPrintForm appointment={appointment}/>} fileName={`LabRequestForm-${current_appointment.patient.lastname}.pdf`}>
                                 {
                                     ({blob, url, loading, error}) => loading ? 'Loading Document...' : 
                                     <Tooltip title="Print Lab Request">

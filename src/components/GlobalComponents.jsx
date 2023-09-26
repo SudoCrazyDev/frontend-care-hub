@@ -9,8 +9,10 @@ const GetNotificationMessage = (status, message) => {
             return <MuiAlert elevation={6} variant="filled" severity="success" className="bg-success"><strong>{message}</strong></MuiAlert>;
         case 'error':
             return <MuiAlert elevation={6} variant="filled" severity="error" className="bg-danger"><strong>{message}</strong></MuiAlert>;
+        case 'info':
+            return <MuiAlert elevation={6} variant="filled" severity="info" className="bg-danger"><strong>{message}</strong></MuiAlert>;
         default:
-            return <MuiAlert elevation={6} variant="filled" severity="error" className="bg-danger"><strong>{message}</strong></MuiAlert>;
+            return <MuiAlert elevation={6} variant="filled" severity="info" className="bg-danger"><strong>{message}</strong></MuiAlert>;
     }
 }
 function SnackBarNotification(){

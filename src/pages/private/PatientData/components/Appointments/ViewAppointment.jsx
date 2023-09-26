@@ -1,8 +1,8 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputLabel, Tooltip, Divider, TextField  } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputLabel, Tooltip, Divider, TextField, InputAdornment  } from "@mui/material";
 import React, { useState } from "react";
 import DescriptionIcon from '@mui/icons-material/Description';
 import SearchIcon from '@mui/icons-material/Search';
-import ViewLabRequest from "./ViewAppointment.LabRequest.Table";
+import ViewLabRequestTable from "./ViewAppointment.LabRequest.Table";
 
 export default function ViewAppointment({patientData, appointment}){
     const [open, setOpen] = useState(false);
@@ -57,7 +57,10 @@ export default function ViewAppointment({patientData, appointment}){
                                 variant='outlined'
                                 fullWidth={true}
                                 InputProps={{
-                                    readOnly: true
+                                    readOnly: true,
+                                    endAdornment: <InputAdornment position="end">
+                                        mmhg
+                                    </InputAdornment>
                                 }}
                                 value={appointment.blood_pressure}
                             />
@@ -68,7 +71,10 @@ export default function ViewAppointment({patientData, appointment}){
                                 variant='outlined' 
                                 fullWidth={true}
                                 InputProps={{
-                                    readOnly: true
+                                    readOnly: true,
+                                    endAdornment: <InputAdornment position="end">
+                                        °C
+                                    </InputAdornment>
                                 }}
                                 value={appointment.temperature}
                             />
@@ -79,7 +85,10 @@ export default function ViewAppointment({patientData, appointment}){
                                 variant='outlined'
                                 fullWidth={true}
                                 InputProps={{
-                                    readOnly: true
+                                    readOnly: true,
+                                    endAdornment: <InputAdornment position="end">
+                                        bpm
+                                    </InputAdornment>
                                 }}
                                 value={appointment.heart_rate}
                             />
@@ -90,7 +99,10 @@ export default function ViewAppointment({patientData, appointment}){
                                 variant='outlined'
                                 fullWidth={true}
                                 InputProps={{
-                                    readOnly: true
+                                    readOnly: true,
+                                    endAdornment: <InputAdornment position="end">
+                                        kg
+                                    </InputAdornment>
                                 }}
                                 value={appointment.weight}
                             />
@@ -105,17 +117,10 @@ export default function ViewAppointment({patientData, appointment}){
                                 fullWidth={true}
                                 multiline rows={5}
                                 InputProps={{
-                                    readOnly: true
+                                    readOnly: true,
                                 }}
                                 value={appointment.chief_complaint || ""}
                             />
-                        </div>
-                        <Divider className="my-2"/>
-                        <div className="col-12 d-flex flex-row my-2">
-                            <h2 className="fw-bold m-0">LAB REQUEST</h2>
-                        </div>
-                        <div className="col-12 my-2">
-                            <ViewLabRequest appointment={appointment} />
                         </div>
                     </div>
                 </div>

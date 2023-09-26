@@ -7,9 +7,9 @@ import { useNotification } from '../../../helpers/CustomHooks';
 import axios from 'axios';
 
 const validationSchema = Yup.object().shape({
-    unit: Yup.string().required('Required'),
-    name: Yup.string().required('Required'),
-    brand: Yup.string().required('Required'),
+    generic_name: Yup.string().required('Required'),
+    brand_id: Yup.string().required('Required'),
+    unit_id: Yup.string().required('Required'),
 });
 
 export default function InitializeFormik(type, medicine){
@@ -19,7 +19,7 @@ export default function InitializeFormik(type, medicine){
     const handleSubmitNew = (values) => {
         axios.post('medicines/insert_medicine', values)
         .then((res) => {
-            dispatch(setMedicines(res.data));
+            dispatch(setMedicines(res.data.data));
             handleNotification('success', 'Medicine added successfully');
         })
         .catch((err) => {
@@ -33,7 +33,7 @@ export default function InitializeFormik(type, medicine){
     const handleSubmitUpdate = (values) => {
         axios.put(`medicines/update_medicine/${medicine.id}`, values)
         .then((res) => {
-            dispatch(res.data);
+            dispatch(setMedicines(res.data.data));
             handleNotification('success', 'Medicine updated successfully');
         })
         .catch(err => {
@@ -45,13 +45,11 @@ export default function InitializeFormik(type, medicine){
     };
 
     const formik = useFormik({
-        initialErrors:{
-            name: 'Required'
-        },
         initialValues:{
-            name: type === 'new' ? '' : medicine.name,
-            unit: type === 'new' ? '' : medicine.unit,
-            brand: type === 'new' ? '' : medicine.brand,
+            generic_name: type === 'new' ? '' : medicine.generic_name,
+            description: type === 'new'? '' : medicine.description,
+            unit_id: type === 'new' ? '' : medicine.unit.unit_name,
+            brand_id: type === 'new' ? '' : medicine.brand.brand_name
         },
         validationSchema: validationSchema,
         onSubmit: type === 'new' ? handleSubmitNew : handleSubmitUpdate

@@ -19,13 +19,7 @@ export default function LabRequestTable({formik}){
                     birthdate: formik.values.patient.birthdate,
                     gender: formik.values.patient.gender
                 },
-                laboratory:{
-                    cbc: formik.values.lab_request.cbc ? '1' : '0',
-                    urinalysis: formik.values.lab_request.urinalysis ? '1' : '0',
-                    stool_exam: formik.values.lab_request.stool_exam ? '1' : '0',
-                    blood_chemistry: JSON.stringify(formik.values.lab_request.blood_chemistry),
-                    xray: JSON.stringify(formik.values.lab_request.xray),
-                },
+                lab_request: formik.values.lab_request,
             })
         }
     }, [formik.values]);
