@@ -387,7 +387,7 @@ console.log(medications);
                 </tbody>
               </table>
             </div>
-            <div className="col-6 p-2">
+            <div className="d-none col-6 p-2">
             <InputLabel className='text-dark fw-bold h2 text-uppercase'>Last Medications</InputLabel>
               <table className="table table-bordered">
                 <thead>
@@ -418,14 +418,14 @@ console.log(medications);
                 </tbody>
               </table>
             </div>
-            <div className="col-6 p-2">
+            <div className="col-12 p-2">
             <InputLabel className='text-dark fw-bold h2 text-uppercase'>MEDICATIONS</InputLabel>
               <table className="table table-bordered">
                 <thead>
                   <tr>
                     <th style={{ width: '5%'}}></th>
                     <th style={{ width: '45%'}}>Medicine</th>
-                    <th style={{ width: '15%'}}>Qty</th>
+                    <th style={{ width: '8%'}}>Qty</th>
                     <th>Instructions</th>
                   </tr>
                 </thead>
@@ -449,7 +449,9 @@ console.log(medications);
                           />
                       </td>
                       <td valign='middle'>
-                          <TextField 
+                          <TextField
+                            multiline={true}
+                            fullWidth
                             variant='outlined'
                             onChange={(e) => handleChangeMedicationValues(index, {id: medication.id, generic_name: medication.generic_name, description: medication.description, unit: medication.unit, qty: medication.qty, instruction: e.target.value})}
                             value={medication.instruction}
