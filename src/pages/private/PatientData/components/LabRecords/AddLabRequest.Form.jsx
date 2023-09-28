@@ -8,7 +8,6 @@ export default function AddLabRequestForm({formik}){
     const [previewImages, setPreviewImages] = useState([]);
 
     const handleFilesSelect = (event) => {
-        console.log(event.currentTarget.files);
         const imageFiles = event.currentTarget.files;
         if(imageFiles && imageFiles.length > 0){
             const imagesArray = Array.from(imageFiles);

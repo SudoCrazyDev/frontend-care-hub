@@ -15,7 +15,17 @@ export default function PatientAddMedicine({patientData}){
     const [selectedMedicineValue, setSelectedMedicineValue] = useState(0);
     const [selectedMedicineInstruction, setSelectedMedicineInstruction] = useState("");
     const [selectedMedicineClear, setSelectedMedicineClear] = useState(false);
+    const [lastMedications, setLastMedications] = useState([]);
     
+    const handleFetchLastMedications = () => {
+        axios.get(`patients/get_patient_last_medications/${patientData.id}`)
+        .then((res) => {
+            if(res.data.medicines !== '' && res.data.medicines !== null){
+            setLastMedications(JSON.parse(res.data.medicines)); 
+            }
+        });
+    };
+      
     const handleModalState = () => {
         setModalState(!modalState);
     };
@@ -68,6 +78,11 @@ export default function PatientAddMedicine({patientData}){
         });
     };
     
+    const handleSameMeds = () => {
+        setMedications([...medications, ...lastMedications]);
+        formik.setFieldValue('medications', JSON.stringify([...medications, ...lastMedications]));
+    };
+      
     useEffect(() => {
         if(medications.length === 0 ){
             formik.setFieldValue('has_medications', false);
@@ -76,6 +91,7 @@ export default function PatientAddMedicine({patientData}){
     
     const handleChangeMedicationValues = (baseIndex, newValue) => {
         setMedications([...medications.filter((medication, index) => index !== baseIndex), newValue]);
+        formik.setFieldValue('medications', JSON.stringify([...medications.filter((medication, index) => index !== baseIndex), newValue]));
       };
       
     const formik = useFormik({
@@ -87,6 +103,9 @@ export default function PatientAddMedicine({patientData}){
         onSubmit: handleSaveMedicine
     });
     
+    useEffect(() => {
+        handleFetchLastMedications()
+    }, []);
     return (
         <>
             <CHButton variant="contained" color="primary" className="fw-bolder" onClick={() => handleModalState()}>
@@ -99,6 +118,9 @@ export default function PatientAddMedicine({patientData}){
                         <div className="col-12 p-2">
                             <div className="d-flex flex-row mb-1 align-items-center">
                                 <InputLabel className='text-dark fw-bold h2 text-uppercase m-0'>ADD MEDICATIONS</InputLabel>
+                                <Button variant="contained" size="small" className='ms-auto' disabled={lastMedications.length === 0} onClick={handleSameMeds}>
+                                    Same Meds as Last Visit
+                                </Button>
                             </div>
                             <table className="table table-bordered">
                                 <thead>

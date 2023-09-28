@@ -29,11 +29,8 @@ export default function InitializeFormik(patient, setAppointments){
     };
 
     const formik = useFormik({
-        initialErrors:{
-            consultation_date: ""
-        },
         initialValues:{
-            consultation_date: new Date(),
+            consultation_date: new Date().toLocaleDateString('en-CA'),
             patient_id: patient?.id ? patient.id : 0,
             patient_name: patient ? `${patient.firstname} ${patient.lastname}` : "",
             blood_pressure : "",

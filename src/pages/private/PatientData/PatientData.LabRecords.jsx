@@ -54,16 +54,17 @@ export default function PatientLabRecords({patientData}){
                                           <LabRequestResultUpload laboratory={labResult}/>  
                                         )} */}
                                         {labResult.type === 'Request' && (
-                                            <PDFDownloadLink document={<LaboRatoryRequestPrintForm appointment={{patient:{firstname: patientData.firstname, lastname: patientData.lastname, address: patientData.address, birthdate: patientData.address, gender: patientData.gender}, lab_request: JSON.parse(labResult.form_details)}}/>} fileName={`LabRequestForm-${patientData.lastname}.pdf`}>
-                                                {
-                                                    ({blob, url, loading, error}) => loading ? 'Loading Document...' : 
-                                                    <Tooltip title="Print Lab Request">
-                                                        <IconButton color="primary" size="small" onClick={() => window.open(url)}>
-                                                                <PrintIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                }
-                                            </PDFDownloadLink>
+                                            // <PDFDownloadLink document={<LaboRatoryRequestPrintForm appointment={{patient:{firstname: patientData.firstname, lastname: patientData.lastname, address: patientData.address, birthdate: patientData.address, gender: patientData.gender}, lab_request: JSON.parse(labResult.form_details)}}/>} fileName={`LabRequestForm-${patientData.lastname}.pdf`}>
+                                            //     {
+                                            //         ({blob, url, loading, error}) => loading ? 'Loading Document...' : 
+                                            //         <Tooltip title="Print Lab Request">
+                                            //             <IconButton color="primary" size="small" onClick={() => window.open(url)}>
+                                            //                     <PrintIcon />
+                                            //             </IconButton>
+                                            //         </Tooltip>
+                                            //     }
+                                            // </PDFDownloadLink>
+                                            <LaboRatoryRequestPrintForm appointment={{patient:{firstname: patientData.firstname, lastname: patientData.lastname, address: patientData.address, birthdate: patientData.birthdate, gender: patientData.gender}, lab_request: JSON.parse(labResult.form_details)}}/>
                                         )}
                                     </td>
                                 </tr>
