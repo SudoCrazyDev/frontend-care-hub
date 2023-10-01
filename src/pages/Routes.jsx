@@ -11,6 +11,7 @@ import { SnackBarNotification } from "../components/GlobalComponents";
 import Medicines from "./private/Medicines/Medicines";
 import { useEffect } from "react";
 import Referrals from "./private/Referrals/Referrals";
+import Summary from "./private/Reports/Summary";
 
 function PublicRoutes(){
     const navigate = useNavigate();
@@ -44,6 +45,7 @@ function PrivateRoutes(){
                         <Route path="/laboratory" element={<Laboratory />} />
                         <Route path="/medicines" element={<Medicines />} />
                         <Route path="/referrals" element={<Referrals />} />
+                        <Route path="/reports" element={<Summary />} />
                     </Routes>
                 </MainLayout>
                 <SnackBarNotification />

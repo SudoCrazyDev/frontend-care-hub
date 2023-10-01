@@ -5,7 +5,6 @@ import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import MedicationIcon from '@mui/icons-material/Medication';
 import styled from "@emotion/styled";
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import DescriptionIcon from '@mui/icons-material/Description';
 
 const CHNavButton = styled(Button)`
     color: #3B9488;
@@ -51,6 +50,12 @@ function SideNav(){
         <NavLink to="/medicines">
             <CHNavButton variant="text" className={`p-2 justify-content-start ${handleIsPageActive('medicines')}`} fullWidth>
                 <p className="m-0 text-capitalize fw-bold fs-5"><MedicationIcon fontSize="medium" /> Medicines</p>
+            </CHNavButton>
+        </NavLink>
+        
+        <NavLink to="/reports">
+            <CHNavButton variant="text" className={`p-2 justify-content-start ${handleIsPageActive('reports')}`} fullWidth>
+                <p className="m-0 text-capitalize fw-bold fs-5"><AssessmentIcon fontSize="medium" /> Summary</p>
             </CHNavButton>
         </NavLink>
 

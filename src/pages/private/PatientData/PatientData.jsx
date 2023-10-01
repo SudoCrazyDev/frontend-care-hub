@@ -25,7 +25,8 @@ export default function PatientData(){
         axios.get(`patients/get_patient_photo/${patientId}`)
         .then(res => {
             let stringUrl = res.data;
-            setPatientPhoto(stringUrl.replace('storage','public/storage'));
+            setPatientPhoto(stringUrl);
+            // setPatientPhoto(stringUrl.replace('storage','storage'));
         })
     };
 
@@ -52,9 +53,19 @@ export default function PatientData(){
                         <h5 className="m-0 fw-bolder">{calculateAgeWithMonths(patientData.birthdate).age} years old</h5>
                     </div>
                 </div>
-                <div className="ms-auto border rounded border-light shadow-lg" style={{ height: '180px', width: '250px', background: `url('${patientPhoto}')`, backgroundSize: `${patientPhoto == '/assets/svg/maleUser.svg' ? 'contain' : 'cover'}`, borderRadius: '10px'}}>
+                {patientPhoto === "/assets/svg/maleUser.svg" ? (
+                    <div className="ms-auto border rounded border-light shadow-lg" style={{ height: '180px', width: '250px', background: `url('/assets/svg/maleUser.svg')`, backgroundSize: `contain`, borderRadius: '10px'}}>
 
-                </div>
+                    </div>
+                ) 
+                : (
+                    <div className="ms-auto border rounded border-light shadow-lg" style={{ height: '180px', width: '250px', background: `url('${patientPhoto}')`, backgroundSize: `cover`, borderRadius: '10px'}}>
+
+                    </div>
+                )
+                    
+                }
+                
             </div>
             <Divider className="my-3"/>
             <div className="col-12">

@@ -6,7 +6,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import {useFormik} from "formik";
 import axios from "axios";
 
-export default function PatientAddMedicine({patientData}){
+export default function PatientAddMedicine({patientData, setMedicationsMain}){
     const [modalState, setModalState] = useState(false);
     const [searching, setSearching] = useState(false);
     const [medications, setMedications] = useState([]);
@@ -74,8 +74,12 @@ export default function PatientAddMedicine({patientData}){
     const handleSaveMedicine = (values) => {
         axios.post(`patients/insert_medicine/`, values)
         .then((res) => {
-            console.log(res);
-        });
+            formik.setSubmitting(false);
+            setMedicationsMain(res.data);
+            setTimeout(() => {
+                setModalState(false);
+            }, 1500);
+        })
     };
     
     const handleSameMeds = () => {
@@ -223,7 +227,7 @@ export default function PatientAddMedicine({patientData}){
                         </div>
                     </DialogContent>
                     <DialogActions className="p-3">
-                        <Button variant="contained" color="primary" type="submit">Save</Button>
+                        <Button variant="contained" color="primary" type="submit" disabled={formik.isSubmitting}>Save</Button>
                         <Button variant="contained" color="error" onClick={() => handleModalState()}>Cancel</Button>
                     </DialogActions>
                 </form>

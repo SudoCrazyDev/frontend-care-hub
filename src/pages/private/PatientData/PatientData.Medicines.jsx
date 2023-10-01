@@ -11,7 +11,7 @@ export default function PatientMedicines({patientData}){
     const handleFetchMedications = () => {
         axios.get(`patients/get_patient_medications/${patientData.id}`)
         .then((res) => {
-            setMedications(res.data);
+            setMedications(res.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
         });
     };
     
@@ -24,7 +24,7 @@ export default function PatientMedicines({patientData}){
             <div className="card-body bg-white rounded p-3 d-flex flex-row flex-wrap" style={{ minHeight: '300px'}}>
                 <div className="d-flex flex-row align-items-center w-100">
                     <div className="ms-auto d-flex flex-row gap-2">
-                        <PatientAddMedicine patientData={patientData}/>
+                        <PatientAddMedicine patientData={patientData} setMedicationsMain={setMedications}/>
                     </div>
                 </div>
                 <div className="col-12 my-3">
@@ -38,8 +38,8 @@ export default function PatientMedicines({patientData}){
                         <tbody>
                             {medications.map((medicine, index) => (
                                 <tr key={index}>
-                                    <td>{new Date(medicine.created_at).toLocaleDateString('en-CA')}</td>
-                                    <td><PrintRx appointment={appointment} medicines={JSON.parse(medicine.medicines)}/></td>
+                                    <td className="fw-bold">{new Date(medicine.created_at).toLocaleDateString('en-CA')}</td>
+                                    <td><PrintRx appointment={appointment} schedule={medicine} medicines={JSON.parse(medicine.medicines)}/></td>
                                 </tr>
                             ))}
                         </tbody>

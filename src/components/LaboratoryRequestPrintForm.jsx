@@ -150,13 +150,13 @@ export default function LaboRatoryRequestPrintForm({appointment}){
                                         </View>
                                         <View style={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', textAlign: 'center', marginTop: '5px'}}>
                                             {section.value.map((sectionValue, index) => (
-                                                <Text style={{fontSize: '15px', fontWeight: 400, width: '33%', textAlign: 'left'}} key={index}>{`${sectionValue.value ? ' _X_' : '___'}`} {sectionValue.title} </Text>
+                                                <Text style={{fontSize: '10px', fontWeight: 400, width: '33%', textAlign: 'left'}} key={index}>{`${sectionValue.value ? ' _X_' : '___'}`} {sectionValue.title} </Text>
                                             ))}
                                         </View>
                                     </React.Fragment>
                                 ))}
                                     
-                                <View style={{marginTop: 'auto', display: 'flex', flexDirection: 'column'}}>
+                                <View style={{marginTop: 'auto', display: 'flex', flexDirection: 'column', paddingTop: '10px'}}>
                                     <View style={{display:'flex', flexDirection: 'row'}}>
                                         <Text style={{width: '45%', borderTop: '0.8px solid #222222', marginTop: '2px', marginBottom: '5px'}}></Text>
                                     </View>

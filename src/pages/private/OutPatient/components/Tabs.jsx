@@ -185,7 +185,6 @@ export default function TabsPricingExample({formik, appointment}) {
     }
 }, [formik.values]);
 
-console.log(medications);
   return (
     <Tabs
       variant="outlined"
@@ -260,16 +259,7 @@ console.log(medications);
                         <td>{GetStatusBadge('pending')}</td>
                         <td>
                             {JSON.stringify(pdfAppointment) !== '{}' && (
-                                <PDFDownloadLink document={<LaboRatoryRequestPrintForm appointment={pdfAppointment}/>} fileName={`LabRequestForm-${formik.values.patient.lastname}.pdf`}>
-                                    {
-                                        ({blob, url, loading, error}) => loading ? 'Loading Document...' : 
-                                        <Tooltip title="Print Lab Request">
-                                            <IconButton color="primary" size="small" onClick={() => window.open(url)}>
-                                                    <PrintIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    }
-                                </PDFDownloadLink>
+                                <LaboRatoryRequestPrintForm appointment={pdfAppointment} />
                             )}
                             <Tooltip title="Cancel Request">
                                 <IconButton color='primary' onClick={() => formik.setFieldValue('has_lab_request', 0)}>

@@ -118,16 +118,7 @@ export default function ViewOutPatientResult({setAppointments, current_appointme
                                             <td>{GetStatusBadge(GetStatusBadge(current_appointment.laboratory.status))}</td>
                                             <td>
                                             <LabRequestView labRequest={JSON.parse(current_appointment.laboratory.form_details)} />
-                                            <PDFDownloadLink document={<LaboRatoryRequestPrintForm appointment={appointment}/>} fileName={`LabRequestForm-${current_appointment.patient.lastname}.pdf`}>
-                                                {
-                                                    ({blob, url, loading, error}) => loading ? 'Loading Document...' : 
-                                                    <Tooltip title="Print Lab Request">
-                                                        <IconButton color="primary" size="small" onClick={() => window.open(url)}>
-                                                                <PrintIcon />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                }
-                                            </PDFDownloadLink>
+                                            <LaboRatoryRequestPrintForm appointment={appointment}/>
                                             </td>
                                         </tr>
                                     )}
