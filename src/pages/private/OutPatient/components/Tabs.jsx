@@ -11,9 +11,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import LabRequest from '../../PatientData/components/LabRequest/LabRequest';
 import CancelIcon from '@mui/icons-material/Cancel';
 import LaboRatoryRequestPrintForm from '../../../../components/LaboratoryRequestPrintForm';
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import { GetStatusBadge } from '../../../../helpers/HelperFunctions';
-import PrintIcon from '@mui/icons-material/Print';
 
 const NewAdmissionModal = ({formik, setAdmissions}) => {
     const [open, setOpen] = useState(false);
@@ -224,7 +222,7 @@ export default function TabsPricingExample({formik, appointment}) {
         <Tab variant="soft" sx={{ flexGrow: 1 }} className="fw-bolder text-uppercase">
            Admissions
         </Tab>
-        <Tab variant="soft" sx={{ flexGrow: 1 }} className="fw-bolder text-uppercase">
+        <Tab variant="soft" sx={{ flexGrow: 1 }} className={`fw-bolder text-uppercase ${formik.values.professional_fee === 0 && 'bg-danger text-white'}`}>
           Billing
         </Tab>
       </TabList>

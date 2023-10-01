@@ -22,6 +22,9 @@ export default function InitializeFormik(appointment, setAppointments){
     };
     
     const formik = useFormik({
+        initialErrors: {
+            professional_fee: true,
+        },
         initialValues:{
             patient_id: appointment.patient.id,
             patient:{

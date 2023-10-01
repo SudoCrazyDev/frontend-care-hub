@@ -35,7 +35,7 @@ export default function OutPatient({appointment, setAppointments}){
                     <OutPatientContent formik={formik} appointment={appointment} />
                 </DialogContent>
                 <DialogActions className="p-3">
-                    <Button disabled={formik.isSubmitting} variant="contained" type="submit">Save</Button>
+                    <Button disabled={formik.isSubmitting || formik.isValid} variant="contained" type="submit">Save</Button>
                     <Button variant="contained" color="error" onClick={handleClickModal}>Cancel</Button>
                 </DialogActions>
             </form>
