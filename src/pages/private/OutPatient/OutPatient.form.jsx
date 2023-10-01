@@ -18,6 +18,8 @@ export default function OutPatientContent({formik, appointment}){
     useEffect(() => {
         handleFetchPatientPhoto();
     },[]);
+    
+    console.log(formik.isValid);
     return(
         <div className="d-flex flex-row flex-wrap">
             <div className="col-4 p-2">
