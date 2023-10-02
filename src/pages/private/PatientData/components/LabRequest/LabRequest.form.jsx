@@ -4,11 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useNotification } from "../../../../../helpers/CustomHooks";
 
 export default function LabRequestForm({formik}){
-    const [sectionEdit, setSectionEdit] = useState("");
+    const [sectionEdit, setSectionEdit]       = useState("");
     const [buttonDisabled, setButtonDisabled] = useState(false);
-    const [sections, setSections]       = useState([]);
-    const [meta_id, setMetaId] = useState("");
-    const { handleNotification } = useNotification();
+    const [sections, setSections]             = useState([]);
+    const [meta_id, setMetaId]                = useState("");
+    const [metaTemplate, setMetaTemplate]     = useState([]);
+    const { handleNotification }              = useNotification();
 
     const handleFetchLabRequestTemplate = () => {
         axios.get('meta_values/get_meta_key_value/lab_request_template')
@@ -39,6 +40,26 @@ export default function LabRequestForm({formik}){
                 return mainSection
             }
         })
+        let meta_template = old_sections.map((mainSection, index) => {
+            if(index === parentIndex){
+                return{
+                    ...mainSection,
+                    value: mainSection.value.map((sectionValue, index) => {
+                        if(index === valueIndex){
+                            return {
+                                value: false,
+                                title: event.target.value
+                            }
+                        }else{
+                            return sectionValue
+                        }
+                    })
+                };
+            }else{
+                return mainSection
+            }
+        })
+        setMetaTemplate(meta_template);
         setSections(updated_sections);
     };
 
@@ -71,7 +92,7 @@ export default function LabRequestForm({formik}){
             setSectionEdit('');
             handleNotification('info', 'Saving....')
             setButtonDisabled(true);
-            axios.put(`meta_values/update_meta_key_value/${meta_id}`, {meta_values: JSON.stringify(sections)})
+            axios.put(`meta_values/update_meta_key_value/${meta_id}`, {meta_values: JSON.stringify(metaTemplate)})
             .then(res => {
                 handleNotification('success', 'Template Save Successfully')
             })
@@ -112,11 +133,11 @@ export default function LabRequestForm({formik}){
                     {section.value.map((value, sectionValueIndex) => (
                         <React.Fragment key={sectionValueIndex}>
                             {section.id == sectionEdit ? 
-                                <TextField variant="standard" value={sections[index].value[sectionValueIndex].title} onChange={(event) => handleRenamingSectionValue(event, index, sectionValueIndex)}/>
+                                <TextField className="col-4 p-2" variant="standard" value={sections[index].value[sectionValueIndex].title} onChange={(event) => handleRenamingSectionValue(event, index, sectionValueIndex)}/>
                             :
                                 <FormControlLabel 
                                     className="col-3"
-                                    control={<Checkbox onChange={(event)=> handleSectionValueChange(event, index, sectionValueIndex)}/>} 
+                                    control={<Checkbox checked={sections[index].value[sectionValueIndex].value} onChange={(event)=> handleSectionValueChange(event, index, sectionValueIndex)}/>} 
                                     label={`${value.title}`}
                                 />
                             }

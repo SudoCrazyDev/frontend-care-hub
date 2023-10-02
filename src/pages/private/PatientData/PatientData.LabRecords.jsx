@@ -45,7 +45,7 @@ export default function PatientLabRecords({patientData}){
                             {labResults.map((labResult, index) => (
                                 <tr key={index}>
                                     <td className="fw-bolder">{String(labResult.type).toUpperCase()}</td>
-                                    <td>{labResult.result_date}</td>
+                                    <td>{labResult.result_date || new Date(labResult.created_at).toLocaleDateString('en-CA')}</td>
                                     <td>
                                         {labResult.type === 'Result' && (
                                           <ViewLabResult results={labResult}/>  
