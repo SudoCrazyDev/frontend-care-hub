@@ -19,7 +19,6 @@ export default function OutPatientContent({formik, appointment}){
         handleFetchPatientPhoto();
     },[]);
     
-    console.log(formik.isValid);
     return(
         <div className="d-flex flex-row flex-wrap">
             <div className="col-4 p-2">

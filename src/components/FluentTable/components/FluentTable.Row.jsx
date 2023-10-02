@@ -1,6 +1,6 @@
-export default function FluentTableRow({children}){
+export default function FluentTableRow({className, children}){
     return(
-        <tr>
+        <tr className={className}>
             {children}
         </tr>
     );

@@ -70,13 +70,17 @@ export default function TabsPricingExample({formik, appointment}) {
   const [selectedMedicine, setSelectedMedicine] = useState({unit:{}});
   const [selectedMedicineValue, setSelectedMedicineValue] = useState(0);
   const [selectedMedicineInstruction, setSelectedMedicineInstruction] = useState("");
-  const [selectedMedicineUnit, setSelectedMedicineUnit] = useState("");
+  const [selectedMedicineUnit, setSelectedMedicineUnit] = useState("-");
   const [lastMedications, setLastMedications] = useState([]);
   const [admissions, setAdmissions] = useState([]);
   const [pdfAppointment, setPdfAppointment] = useState({});
   const [medicinesInput, setMedicinesInput] = useState("");
   const [selectedMedicineClear, setSelectedMedicineClear] = useState(false);
   
+  const handleSetSelectedMedicineUnit = (value) => {
+    setSelectedMedicineUnit(value);
+  };
+
   const handleFetchAppointments = () => {
         axios.get(`appointments/get_appointment_by_patient/${appointment.patient.id}`)
         .then(res => {
@@ -116,7 +120,19 @@ export default function TabsPricingExample({formik, appointment}) {
       setSearching(true);
       axios.get(`medicines/lookup_medicine/${event.target.value}`)
       .then(res => {
-        setMedicines(res.data);
+        if(res.data.length === 0){
+          setMedicines([
+              {
+                  id: 0, 
+                  generic_name: event.target.value,
+                  description: '',
+                  unit: {
+                      unit_name: '-'
+                  }}
+          ]);
+      }else{
+          setMedicines(res.data);   
+      }
       })
       .finally(() => {
         setSearching(false);
@@ -145,6 +161,7 @@ export default function TabsPricingExample({formik, appointment}) {
     setMedicines([{id: 0, generic_name: 'Atleast 3 Characters', unit: {unit_name: ''}}]);
     setMedicinesInput("");
     setSelectedMedicineClear(!selectedMedicineClear);
+    setSelectedMedicineUnit("-");
   };
   
   const handleRemoveMedicine = (value) => {
@@ -346,14 +363,17 @@ export default function TabsPricingExample({formik, appointment}) {
                           onChange={(event, newInputValue) => {
                             setSelectedMedicine(newInputValue);
                             setMedicinesInput(`${newInputValue.generic_name} (${newInputValue.description}) - ${newInputValue.unit.unit_name}`);
+                            setSelectedMedicineUnit(newInputValue.unit.unit_name);
                           }}
                           renderInput={(params) => <TextField {...params} onChange={handleLookUpMedicine} value={medicinesInput} label="Medicine" />}
                         />
                     </td>
                     <td valign='middle'>
-                        <h5 className="fw-bolder">
-                          {selectedMedicine.unit.unit_name}
-                        </h5>
+                        <TextField 
+                            type='text'
+                            value={selectedMedicineUnit}
+                            onChange={(e) => handleSetSelectedMedicineUnit(e.target.value)}
+                        />
                     </td>
                     <td valign='middle'>
                       <TextField 

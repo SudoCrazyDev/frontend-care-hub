@@ -15,7 +15,12 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
     const [selectedMedicineValue, setSelectedMedicineValue] = useState(0);
     const [selectedMedicineInstruction, setSelectedMedicineInstruction] = useState("");
     const [selectedMedicineClear, setSelectedMedicineClear] = useState(false);
+    const [selectedMedicineUnit, setSelectedMedicineUnit] = useState("-");
     const [lastMedications, setLastMedications] = useState([]);
+    
+    const handleSetSelectedMedicineUnit = (value) => {
+        setSelectedMedicineUnit(value);
+    };
     
     const handleFetchLastMedications = () => {
         axios.get(`patients/get_patient_last_medications/${patientData.id}`)
@@ -28,6 +33,14 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
       
     const handleModalState = () => {
         setModalState(!modalState);
+        setMedicines([{id: 0, generic_name: 'Atleast 3 Characters', unit: {unit_name: ''}}]);
+        setSelectedMedicineClear(!selectedMedicineClear);
+        setSelectedMedicineUnit("-");
+        setMedications([]);
+        setSelectedMedicine({unit:{}});
+        setSelectedMedicineValue(0);
+        setSelectedMedicineInstruction("");
+        formik.resetForm();
     };
     
     const handleLookUpMedicine = (event) => {
@@ -36,7 +49,19 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
         setSearching(true);
         axios.get(`medicines/lookup_medicine/${event.target.value}`)
         .then(res => {
-            setMedicines(res.data);
+            if(res.data.length === 0){
+                setMedicines([
+                    {
+                        id: 0, 
+                        generic_name: event.target.value,
+                        description: '',
+                        unit: {
+                            unit_name: '-'
+                        }}
+                ]);
+            }else{
+                setMedicines(res.data);   
+            }
         })
         .finally(() => {
             setSearching(false);
@@ -49,7 +74,7 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
             id: selectedMedicine.id,
             generic_name: selectedMedicine.generic_name,
             description: selectedMedicine.description,
-            unit: selectedMedicine.unit.unit_name,
+            unit: selectedMedicineUnit,
             qty: selectedMedicineValue,
             instruction: selectedMedicineInstruction}]);
         setSelectedMedicine({unit:{}});
@@ -59,12 +84,13 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
         id: selectedMedicine.id,
         generic_name: selectedMedicine.generic_name,
         description: selectedMedicine.description,
-        unit: selectedMedicine.unit.unit_name,
+        unit: selectedMedicineUnit,
         qty: selectedMedicineValue,
         instruction: selectedMedicineInstruction}]));
         formik.setFieldValue('has_medications', true);
         setMedicines([{id: 0, generic_name: 'Atleast 3 Characters', unit: {unit_name: ''}}]);
         setSelectedMedicineClear(!selectedMedicineClear);
+        setSelectedMedicineUnit("-");
     };
     
     const handleRemoveMedicine = (value) => {
@@ -153,14 +179,17 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
                                             getOptionDisabled={(option) => option.generic_name === 'Atleast 3 Characters'}
                                             onChange={(event, newInputValue) => {
                                                 setSelectedMedicine(newInputValue);
+                                                setSelectedMedicineUnit(newInputValue.unit.unit_name);
                                             }}
                                             renderInput={(params) => <TextField {...params} onChange={handleLookUpMedicine} label="Medicine" />}
                                             />
                                         </td>
                                         <td valign='middle'>
-                                            <h5 className="fw-bolder">
-                                            {selectedMedicine.unit.unit_name}
-                                            </h5>
+                                            <TextField 
+                                                type='text'
+                                                value={selectedMedicineUnit}
+                                                onChange={(e) => handleSetSelectedMedicineUnit(e.target.value)}
+                                            />
                                         </td>
                                         <td valign='middle'>
                                         <TextField 
