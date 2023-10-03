@@ -120,8 +120,9 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
     }, [medications]);
     
     const handleChangeMedicationValues = (baseIndex, newValue) => {
-        setMedications([...medications.filter((medication, index) => index !== baseIndex), newValue]);
-        formik.setFieldValue('medications', JSON.stringify([...medications.filter((medication, index) => index !== baseIndex), newValue]));
+        medications[baseIndex] = newValue;
+        setMedications(medications);
+        formik.setFieldValue('medications', JSON.stringify(medications));
       };
       
     const formik = useFormik({
@@ -136,6 +137,7 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
     useEffect(() => {
         handleFetchLastMedications()
     }, []);
+    
     return (
         <>
             <CHButton variant="contained" color="primary" className="fw-bolder" onClick={() => handleModalState()}>
@@ -216,39 +218,40 @@ export default function PatientAddMedicine({patientData, setMedicationsMain}){
                             <InputLabel className='text-dark fw-bold h2 text-uppercase'>MEDICATIONS</InputLabel>
                             <table className="table table-bordered">
                                 <thead>
-                                <tr>
-                                    <th style={{ width: '5%'}}></th>
-                                    <th style={{ width: '45%'}}>Medicine</th>
-                                    <th style={{ width: '10%'}}>Qty</th>
-                                    <th>Instructions</th>
-                                </tr>
+                                    <tr>
+                                        <th style={{ width: '3%'}}></th>
+                                        <th style={{ width: '45%'}}>Medicine</th>
+                                        <th style={{ width: '10%'}}>Qty</th>
+                                        <th>Instructions</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 {medications.map((medication, index) => (
                                     <tr key={index}>
-                                    <td valign='middle' style={{ width: '5%'}}>
-                                        <IconButton size="small" onClick={() => handleRemoveMedicine(index)}>
-                                            <RemoveIcon color="error"/>
-                                        </IconButton>
-                                    </td>
-                                    <td valign='middle'>
-                                        {`${medication.generic_name} (${medication.description}) - ${medication.unit}`}
-                                    </td>
-                                    <td valign='middle'>
-                                        <TextField
-                                            type='number'
-                                            variant='outlined'
-                                            onChange={(e) => handleChangeMedicationValues(index, {id: medication.id, generic_name: medication.generic_name, description: medication.description, unit: medication.unit, qty: e.target.value, instruction: medication.instruction})}
-                                            value={medication.qty}
-                                        />
-                                    </td>
-                                    <td valign='middle'>
-                                        <TextField 
-                                            variant='outlined'
-                                            onChange={(e) => handleChangeMedicationValues(index, {id: medication.id, generic_name: medication.generic_name, description: medication.description, unit: medication.unit, qty: medication.qty, instruction: e.target.value})}
-                                            value={medication.instruction}
-                                        />
-                                    </td>
+                                        <td valign='middle' style={{ width: '3%'}}>
+                                            <IconButton size="small" onClick={() => handleRemoveMedicine(index)}>
+                                                <RemoveIcon color="error"/>
+                                            </IconButton>
+                                        </td>
+                                        <td valign='middle'>
+                                            {`${medication.generic_name} (${medication.description}) - ${medication.unit}`}
+                                        </td>
+                                        <td valign='middle'>
+                                            <TextField
+                                                type='number'
+                                                variant='outlined'
+                                                onChange={(e) => handleChangeMedicationValues(index, {id: medication.id, generic_name: medication.generic_name, description: medication.description, unit: medication.unit, qty: e.target.value, instruction: medication.instruction})}
+                                                value={medication.qty}
+                                            />
+                                        </td>
+                                        <td valign='middle'>
+                                            <TextField
+                                                className="w-100"
+                                                variant='outlined'
+                                                onChange={(e) => handleChangeMedicationValues(index, {id: medication.id, generic_name: medication.generic_name, description: medication.description, unit: medication.unit, qty: medication.qty, instruction: e.target.value})}
+                                                value={medication.instruction}
+                                            />
+                                        </td>
                                     </tr>
                                 ))}
                                 </tbody>
