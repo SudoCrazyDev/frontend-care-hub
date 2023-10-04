@@ -200,6 +200,27 @@ export default function TabsPricingExample({formik, appointment}) {
     }
 }, [formik.values]);
 
+//FOR UPDATING THE OUT PATIENT FORM
+  const handleOutPatientFormForUpdate = () => {
+    if(appointment.status !== 'Waiting for Billing') return
+    axios.get(`appointments/get_appointment_out_patient/${appointment.id}`)
+    .then(res => {
+        let out_patient_meds = res.data[0].medicines;
+        if(out_patient_meds !== null || out_patient_meds !== undefined){
+          setMedications(JSON.parse(out_patient_meds))
+          formik.setFieldValue('medications', out_patient_meds);
+        }
+        formik.setFieldValue('significant_findings', res.data[0].significant_findings);
+        formik.setFieldValue('professional_fee', res.data[0].professional_fee);
+        formik.setFieldValue('remarks', res.data[0].remarks);
+        formik.setFieldValue('outpatient_id', res.data[0].id);
+    });
+    
+  };
+  
+  useEffect(() => {
+    handleOutPatientFormForUpdate();
+  },[appointment]);
   return (
     <Tabs
       variant="outlined"
@@ -233,7 +254,7 @@ export default function TabsPricingExample({formik, appointment}) {
         <Tab variant="soft" sx={{ flexGrow: 1 }} className="fw-bolder text-uppercase">
           Laboratories
         </Tab>
-        <Tab variant="soft" sx={{ flexGrow: 1 }} className="fw-bolder text-uppercase">
+        <Tab variant="soft" sx={{ flexGrow: 1 }} className={`fw-bolder text-uppercase ${formik.values.significant_findings === '' && 'bg-danger text-white'}`}>
           findings & medications
         </Tab>
         <Tab variant="soft" sx={{ flexGrow: 1 }} className="fw-bolder text-uppercase">

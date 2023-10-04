@@ -54,7 +54,7 @@ export default function Appointments(){
     
     const filteredAppointments = useMemo(() => {
         return search === "" ? noCancelledAppointments : noCancelledAppointments.filter(appointment => String(appointment.patient.lastname).toUpperCase().includes(String(search).toUpperCase()));
-    }, [appointments, search]);
+    }, [noCancelledAppointments, search]);
 
     useEffect(()=>{
         handleFetchAppointments()
@@ -103,6 +103,7 @@ export default function Appointments(){
                                             <td>{index + 1}</td>
                                             <td className="align-middle fw-bolder text-uppercase">{appointment.patient.firstname} {appointment.patient.lastname}</td>
                                             <td>
+                                                
                                                 <OutPatient appointment={appointment} setAppointments={setAppointments}/>
                                                 { appointment.status === 'complete' || appointment.status === 'Waiting for Billing' && (
                                                     <ViewOutPatientResult current_appointment={appointment} setAppointments={setAppointments}/>

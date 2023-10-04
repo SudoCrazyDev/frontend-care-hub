@@ -21,6 +21,21 @@ export default function InitializeFormik(appointment, setAppointments){
         })
     };
     
+    const handleUpdate = (values) => {
+        formik.setSubmitting(true);
+        handleNotification('success', 'Updating....')
+        
+        axios.put(`out_patients/update/${values['outpatient_id']}`, values)
+        .then(res => {
+            handleNotification('success', 'Sucessfully saved')
+            setAppointments([]);
+            setTimeout(() => {
+                formik.setSubmitting(false);
+                setAppointments(res.data);
+            }, 1500);
+        })
+    };
+    
     const formik = useFormik({
         initialValues:{
             patient_id: appointment.patient.id,
@@ -40,7 +55,7 @@ export default function InitializeFormik(appointment, setAppointments){
             significant_findings: '',
             current_date: new Date().toLocaleDateString('en-CA')
         },
-        onSubmit: handleSubmit
+        onSubmit: appointment.status === 'Waiting for Billing' ? handleUpdate : handleSubmit 
     });
     
     return formik;
