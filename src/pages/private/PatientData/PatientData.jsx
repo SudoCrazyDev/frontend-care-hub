@@ -10,6 +10,8 @@ import PatientLabRecords from "./PatientData.LabRecords";
 import PatientAppointments from "./PatientData.Appointments";
 import axios from "axios";
 import PatientMedicines from "./PatientData.Medicines";
+import Referral from "../Printables/Referral";
+import MedicalCertificate from "../Printables/MedCert";
 
 export default function PatientData(){
     const {patientId} = useParams();
@@ -74,10 +76,14 @@ export default function PatientData(){
                         <Tab className="fw-bolder">APPOINTMENTS</Tab>
                         <Tab className="fw-bolder">LABORATORIES</Tab>
                         <Tab className="fw-bolder">MEDICINES</Tab>
+                        <Tab className="fw-bolder">REFERRAL</Tab>
+                        <Tab className="fw-bolder">MEDICAL CERTIFICATE</Tab>
                     </TabList>
                     <PatientAppointments patientData={patientData}/>
                     <PatientLabRecords patientData={patientData}/>
                     <PatientMedicines patientData={patientData}/>
+                    <Referral patientData={patientData}/>
+                    <MedicalCertificate patientData={patientData} />
                 </Tabs>
             </div>
             

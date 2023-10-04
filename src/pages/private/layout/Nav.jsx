@@ -5,6 +5,7 @@ import RecentActorsIcon from '@mui/icons-material/RecentActors';
 import MedicationIcon from '@mui/icons-material/Medication';
 import styled from "@emotion/styled";
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 
 const CHNavButton = styled(Button)`
     color: #3B9488;
@@ -58,7 +59,7 @@ function SideNav(){
                 <p className="m-0 text-capitalize fw-bold fs-5"><AssessmentIcon fontSize="medium" /> Summary</p>
             </CHNavButton>
         </NavLink>
-
+        
         </div>
     );
 };
