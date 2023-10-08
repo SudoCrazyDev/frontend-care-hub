@@ -46,7 +46,7 @@ Font.register({
     ]
 });
 
-export default function PrintRx({appointment, medicines, schedule}){
+export default function PrintRx({appointment, medicines}){
     const [open, setOpen] = useState(false);
     
     const handleModalState = () => {

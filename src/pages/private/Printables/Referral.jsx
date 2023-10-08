@@ -1,9 +1,25 @@
-import { Button, Divider, TextField} from "@mui/material";
+import { Divider, TextField} from "@mui/material";
 import PrintReferral from "./ReferralPrint";
 import { useFormik } from "formik";
 import TabPanel from '@mui/joy/TabPanel';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Referral({patientData}){
+    const [currentMedicines, setCurrentMedicines] = useState([]);
+    
+    const handleFetchCurrentMedicines = () => {
+        axios.get(`patients/get_patient_last_medications/${patientData.id}`)
+        .then((res) => {
+            if(res.data.medicines !== '' && res.data.medicines !== null){
+                setCurrentMedicines(JSON.parse(res.data.medicines));
+            }
+        });
+    };
+    
+    useEffect(() => {
+        handleFetchCurrentMedicines()
+    },[]);
     
     const formik = useFormik({
         initialValues: {
@@ -24,7 +40,7 @@ export default function Referral({patientData}){
                     <div className="d-flex flex-row">
                         <h2 className="m-0 text-uppercase fw-bolder">Referral Letter</h2>
                         <div className="ms-auto">
-                            <PrintReferral formik={formik}/>
+                            <PrintReferral formik={formik} currentMedicines={currentMedicines}/>
                         </div>
                     </div>
                     <Divider className="my-3"/>

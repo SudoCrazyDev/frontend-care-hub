@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import PatientAddMedicine from "./PatientData.AddMedicine";
 import PrintRx from "./components/Appointments/PrintRx";
+import SingleMedicinePrint from "./PatientData.SingleMedicinePrint";
 
 export default function PatientMedicines({patientData}){
     const [medications, setMedications] = useState([]);
@@ -25,6 +26,7 @@ export default function PatientMedicines({patientData}){
                 <div className="d-flex flex-row align-items-center w-100">
                     <div className="ms-auto d-flex flex-row gap-2">
                         <PatientAddMedicine patientData={patientData} setMedicationsMain={setMedications}/>
+                        <SingleMedicinePrint patientData={patientData} />
                     </div>
                 </div>
                 <div className="col-12 my-3">

@@ -46,7 +46,7 @@ Font.register({
     ]
 });
 
-export default function PrintReferral({formik}){
+export default function PrintReferral({formik, currentMedicines}){
     const [open, setOpen] = useState(false);
     
     const handleModalState = () => {
@@ -139,17 +139,40 @@ export default function PrintReferral({formik}){
                             </View>
                             
                             <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '15px'}}>
-                                <Text style={{width: '95%', fontSize: '10px', fontWeight: 400}}>{`Dear ${formik.values.doctor_name},`}</Text>
+                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400}}>{`Dear ${formik.values.doctor_name},`}</Text>
                             </View>
                             
                             <View style={{display:'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '15px'}}>
-                                <Text style={{width: '95%', fontSize: '10px', fontWeight: 400}}>{`Greetings!`}</Text>
+                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400}}>{`Greetings!`}</Text>
                             </View>
                             
                             <View style={{display:'flex', flexDirection: 'column', alignItems: 'center', marginTop: '15px'}}>
-                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400}}>Respectfilly referring Mr./Mrs./Ms. <Text style={{textDecoration: 'underline', textDecorationColor: 'black'}}>{formik.values.patient.lastname}, {formik.values.patient.firstname} <Text style={{color: 'white', textDecorationColor: 'black'}}>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</Text></Text></Text>
-                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400, marginTop: '8px'}}>age/sex {calculateAgeWithMonths(formik.values.patient.birthdate).age} years old / {formik.values.patient.gender} of {formik.values.patient.address}</Text>
-                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400, marginTop: '8px'}}>for further evaluation of: {formik.values.evaluation}</Text>
+                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400}}>Respectfilly referring Mr./Mrs./Ms. <Text style={{textDecoration: 'underline', textDecorationColor: 'black'}}>{formik.values.patient.lastname}, {formik.values.patient.firstname} <Text style={{color: 'white', textDecorationColor: 'black'}}>AAAAAAAAAAAAAAAAAAAAAAAAAAAA</Text></Text></Text>
+                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400, marginTop: '8px'}}>age/sex <Text style={{textDecoration: 'underline', textDecorationColor: 'black'}}>{calculateAgeWithMonths(formik.values.patient.birthdate).age} years old / {formik.values.patient.gender}</Text> of <Text style={{textDecoration: 'underline', textDecorationColor: 'black'}}>{formik.values.patient.address}</Text></Text>
+                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400, marginTop: '8px'}}>for further evaluation of: <Text style={{textDecoration: 'underline', textDecorationColor: 'black'}}>{formik.values.evaluation} <Text style={{color: 'white', textDecorationColor: 'black'}}>AAAAAAAAAA</Text></Text></Text>
+                            </View>
+                            
+                            <View style={{ paddingLeft: '18px', display:'flex', flexDirection: 'row', marginTop: '50px'}}>
+                                <View style={{width: '50%', display: 'flex', flexDirection: 'column'}}>
+                                    <Text style={{fontSize: '13px', fontWeight: 400}}>Current Meds:</Text>
+                                    {currentMedicines.map((medicine, index) => (
+                                        <Text key={index} style={{fontSize: '11px', fontWeight: 400}}>{`${medicine.generic_name} (${medicine.description})`}</Text>
+                                    ))}
+                                </View>
+                                <View style={{width: '45%', display: 'flex', flexDirection: 'column'}}>
+                                    <Text style={{fontSize: '13px', fontWeight: 400}}>Other Problems:</Text>
+                                    <Text style={{fontSize: '13px', fontWeight: 400}}>
+                                        {formik.values.other_problems}
+                                    </Text>
+                                </View>
+                            </View>
+                            
+                            <View style={{display:'flex', flexDirection: 'column', alignItems: 'center', marginTop: '80px'}}>
+                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400}}>Remarks: <Text style={{textDecoration:'underline'}}>{formik.values.remarks}</Text></Text>
+                            </View>
+                            
+                            <View style={{display:'flex', flexDirection: 'column', alignItems: 'center', marginTop: '15px'}}>
+                                <Text style={{width: '95%', fontSize: '13px', fontWeight: 400}}>Thank you very much.</Text>
                             </View>
                             
                             <View style={{marginTop: 'auto', display: 'flex', flexDirection: 'column', paddingTop: '20px'}} fixed>

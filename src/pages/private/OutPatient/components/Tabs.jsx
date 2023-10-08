@@ -2,7 +2,7 @@ import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
 import TabPanel from '@mui/joy/TabPanel';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import axios from "axios"
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputLabel, TextField, Tooltip } from '@mui/material';
@@ -61,26 +61,99 @@ const NewAdmissionModal = ({formik, setAdmissions}) => {
     );
 };
 export default function TabsPricingExample({formik, appointment}) {
+  
+  const selectedMedicineInit = {
+    generic_name: '',
+    unit: '',
+    description: "",
+    qty: 0,
+    instruction: "",
+  };
+
+  const medicineError = {
+    generic_name: false,
+    unit: false,
+    description: false,
+    qty: false,
+    instruction: false,
+  };
+  
+  const selectedMedicineReducer = (state, action) => {
+    switch (action.type) {
+      case 'SET_SELECTED_MEDICINE':
+        return {
+          ...state,
+          generic_name: action.payload.generic_name,
+          unit: action.payload.unit.unit_name,
+          description: action.payload.description
+        };
+      case 'SET_CUSTOM_BRAND':
+        return{
+          ...state,
+          description: action.payload.description
+        };
+      case 'SET_CUSTOM_UNIT':
+        return{
+          ...state,
+          unit: action.payload.unit,
+        }
+      case 'SET_QTY':
+        return{
+          ...state,
+          qty: action.payload.qty,
+        };
+      case 'SET_INSTRUCTIONS':
+        return{
+          ...state,
+          instruction: action.payload.instruction,
+        }
+      case 'CLEAR_SELECTED_MEDICINE':
+          return selectedMedicineInit;
+      default:
+        return selectedMedicineInit;
+  }};
+
+  const AddMedicineErrorHandler = (state, action) => {
+      switch (action.type){
+        case 'ERROR_GENERIC_NAME':
+          return {...state, generic_name: true};
+        case 'ERROR_UNIT':
+          return {...state, unit: true};
+        case 'ERROR_QTY':
+            return {...state, qty: true};
+        case 'ERROR_INSTRUCTION':
+            return {...state, instruction: true};
+        case 'ERROR_BRAND':
+            return {...state, description: true};
+        case 'CLEAR_ERROR_GENERIC_NAME':
+              return {...state, generic_name: false};
+        case 'CLEAR_ERROR_UNIT':
+              return {...state, unit: false};
+        case 'CLEAR_ERROR_QTY':
+              return {...state, qty: false};
+        case 'CLEAR_ERROR_INSTRUCTION':
+                return {...state, instruction: false};
+        case 'CLEAR_ERROR_BRAND':
+            return {...state, description: false};
+        case 'CLEAR_ERRORS':
+            return medicineError;
+        default:
+            return medicineError;
+      }
+  };
   const [appointments, setAppointments] = useState([]);
   const [laboratories, setLaboratories] = useState([]);
   const [searching, setSearching] = useState(false);
   const [medications, setMedications] = useState([]);
-  const [outPatients, setOutPatients] = useState([]);
   const [medicines, setMedicines] = useState([{id: 0, generic_name: 'Atleast 3 Characters', unit: {unit_name: ''}}]);
-  const [selectedMedicine, setSelectedMedicine] = useState({unit:{}});
-  const [selectedMedicineValue, setSelectedMedicineValue] = useState(0);
-  const [selectedMedicineInstruction, setSelectedMedicineInstruction] = useState("");
-  const [selectedMedicineUnit, setSelectedMedicineUnit] = useState("-");
   const [lastMedications, setLastMedications] = useState([]);
   const [admissions, setAdmissions] = useState([]);
   const [pdfAppointment, setPdfAppointment] = useState({});
   const [medicinesInput, setMedicinesInput] = useState("");
   const [selectedMedicineClear, setSelectedMedicineClear] = useState(false);
+  const [state, dispatch] = useReducer(selectedMedicineReducer, selectedMedicineInit);
+  const [errorState, errorDispatch] = useReducer(AddMedicineErrorHandler, medicineError);
   
-  const handleSetSelectedMedicineUnit = (value) => {
-    setSelectedMedicineUnit(value);
-  };
-
   const handleFetchAppointments = () => {
         axios.get(`appointments/get_appointment_by_patient/${appointment.patient.id}`)
         .then(res => {
@@ -141,27 +214,32 @@ export default function TabsPricingExample({formik, appointment}) {
   };
   
   const handleAddMedicine = () => {
-    setMedications([...medications, {
-        id: selectedMedicine.id,
-        generic_name: selectedMedicine.generic_name,
-        description: selectedMedicine.description,
-        unit: selectedMedicine.unit.unit_name,
-        qty: selectedMedicineValue,
-        instruction: selectedMedicineInstruction}]);
-    setSelectedMedicine({unit:{}});
-    setSelectedMedicineValue(0);
-    setSelectedMedicineInstruction("");
-    formik.setFieldValue('medications', JSON.stringify([...medications, {
-      id: selectedMedicine.id,
-      generic_name: selectedMedicine.generic_name,
-      description: selectedMedicine.description,
-      unit: selectedMedicine.unit.unit_name,
-      qty: selectedMedicineValue,
-      instruction: selectedMedicineInstruction}]));
-    setMedicines([{id: 0, generic_name: 'Atleast 3 Characters', unit: {unit_name: ''}}]);
-    setMedicinesInput("");
+    if(state.generic_name === ''){
+      errorDispatch({type: 'ERROR_GENERIC_NAME'});
+      return ;
+    }
+    if(state.unit === ''){
+      errorDispatch({type: 'ERROR_UNIT'});
+      return;
+    }
+    if(state.description === ''){
+      errorDispatch({type: 'ERROR_BRAND'});
+      return;
+    }
+    if(state.qty === 0){
+      errorDispatch({type: 'ERROR_QTY'});
+      return;
+    }
+    if(state.instruction === ''){
+      errorDispatch({type: 'ERROR_INSTRUCTION'});
+      return;
+    }
+    setMedications([...medications, state]);
+    dispatch({type: 'CLEAR_SELECTED_MEDICINE'});
+    errorDispatch({type: 'CLEAR_ERROR'});
+    formik.setFieldValue('medications', JSON.stringify([...medications, state]));
+    setMedicines([{generic_name: 'Atleast 3 Characters', unit: {unit_name: ''}}]);
     setSelectedMedicineClear(!selectedMedicineClear);
-    setSelectedMedicineUnit("-");
   };
   
   const handleRemoveMedicine = (value) => {
@@ -174,8 +252,9 @@ export default function TabsPricingExample({formik, appointment}) {
   };
   
   const handleChangeMedicationValues = (baseIndex, newValue) => {
-    setMedications([...medications.filter((medication, index) => index !== baseIndex), newValue]);
-    formik.setFieldValue('medications', JSON.stringify([...medications.filter((medication, index) => index !== baseIndex), newValue]));
+      medications[baseIndex] = newValue;
+      setMedications(medications);
+      formik.setFieldValue('medications', JSON.stringify(medications));
   };
   
   useEffect(() => {
@@ -221,6 +300,7 @@ export default function TabsPricingExample({formik, appointment}) {
   useEffect(() => {
     handleOutPatientFormForUpdate();
   },[appointment]);
+  
   return (
     <Tabs
       variant="outlined"
@@ -339,7 +419,7 @@ export default function TabsPricingExample({formik, appointment}) {
       </TabPanel>
       <TabPanel value={2}>
         <div className="p-4 d-flex flex-row flex-wrap">
-            <div className="col-4 p-2">
+            <div className="col-3 p-2">
                   <InputLabel className='text-dark fw-bold h2 text-uppercase'>Significant Findings/Remarks</InputLabel>
                   <TextField 
                       variant='outlined' 
@@ -349,7 +429,7 @@ export default function TabsPricingExample({formik, appointment}) {
                       {...formik.getFieldProps('significant_findings')}
                   />
             </div>
-            <div className="col-8 p-2">
+            <div className="col-9 p-2">
               <div className="d-flex flex-row mb-1 align-items-center">
                 <InputLabel className='text-dark fw-bold h2 text-uppercase m-0'>Medications to Administer</InputLabel>
                 <Button variant="contained" size="small" className='ms-auto' disabled={lastMedications.length === 0} onClick={handleSameMeds}>
@@ -361,7 +441,8 @@ export default function TabsPricingExample({formik, appointment}) {
                   <tr>
                     <th style={{ width: '5%'}}></th>
                     <th style={{ width: '35%'}}>Medicine</th>
-                    <th style={{ width: '20%'}}>Unit</th>
+                    <th style={{ width: '15%'}}>Brand</th>
+                    <th style={{ width: '10%'}}>Unit</th>
                     <th style={{ width: '10%'}}>Qty</th>
                     <th>Instructions</th>
                   </tr>
@@ -382,25 +463,47 @@ export default function TabsPricingExample({formik, appointment}) {
                           getOptionLabel={(option) => `${option.generic_name} (${option.description}) - ${option.unit.unit_name}`}
                           getOptionDisabled={(option) => option.generic_name === 'Atleast 3 Characters'}
                           onChange={(event, newInputValue) => {
-                            setSelectedMedicine(newInputValue);
                             setMedicinesInput(`${newInputValue.generic_name} (${newInputValue.description}) - ${newInputValue.unit.unit_name}`);
-                            setSelectedMedicineUnit(newInputValue.unit.unit_name);
+                            dispatch({type: 'SET_SELECTED_MEDICINE', payload: newInputValue});
+                            errorDispatch({type: 'CLEAR_ERROR_GENERIC_NAME'});
                           }}
-                          renderInput={(params) => <TextField {...params} onChange={handleLookUpMedicine} value={medicinesInput} label="Medicine" />}
+                          renderInput={(params) => <TextField {...params} error={errorState.generic_name} helperText={errorState.generic_name ? "Please select Medicine" : ""} onChange={handleLookUpMedicine} value={medicinesInput} label="Medicine" />}
                         />
                     </td>
                     <td valign='middle'>
                         <TextField 
                             type='text'
-                            value={selectedMedicineUnit}
-                            onChange={(e) => handleSetSelectedMedicineUnit(e.target.value)}
+                            value={state.description}
+                            error={errorState.description}
+                            helperText={errorState.description ? "Please put a brand" : ""}
+                            onChange={(e) => {
+                              dispatch({type: 'SET_CUSTOM_BRAND', payload: {description: e.target.value}});
+                              errorDispatch({type: 'CLEAR_ERROR_BRAND'});
+                            }}
+                        />
+                    </td>
+                    <td valign='middle'>
+                        <TextField 
+                            type='text'
+                            value={state.unit}
+                            error={errorState.unit}
+                            helperText={errorState.unit ? "Please put a unit" : ""}
+                            onChange={(e) => {
+                              dispatch({type: 'SET_CUSTOM_UNIT', payload: {unit: e.target.value}});
+                              errorDispatch({type: 'CLEAR_ERROR_UNIT'});
+                            }}
                         />
                     </td>
                     <td valign='middle'>
                       <TextField 
                         type='number'
-                        value={selectedMedicineValue}
-                        onChange={(e) => setSelectedMedicineValue(e.target.value)}
+                        value={state.qty}
+                        error={errorState.qty}
+                        helperText={errorState.qty ? "Please put a qty" : ""}
+                        onChange={(e) => {
+                          dispatch({type: 'SET_QTY', payload: {qty: e.target.value}});
+                          errorDispatch({type: 'CLEAR_ERROR_QTY'});
+                        }}
                       />
                     </td>
                     <td valign='middle'>
@@ -408,8 +511,13 @@ export default function TabsPricingExample({formik, appointment}) {
                         fullWidth
                         multiline
                         rows={2}
-                        value={selectedMedicineInstruction}
-                        onChange={(e) => setSelectedMedicineInstruction(e.target.value)}
+                        value={state.instruction}
+                        error={errorState.instruction} 
+                        helperText={errorState.instruction ? "Please put an instruction" : ""}
+                        onChange={(e) => {
+                          dispatch({type: 'SET_INSTRUCTIONS', payload: {instruction: e.target.value}});
+                          errorDispatch({type: 'CLEAR_ERROR_INSTRUCTION'});
+                        }}
                       />
                     </td>
                   </tr>
@@ -453,8 +561,10 @@ export default function TabsPricingExample({formik, appointment}) {
                 <thead>
                   <tr>
                     <th style={{ width: '5%'}}></th>
-                    <th style={{ width: '45%'}}>Medicine</th>
-                    <th style={{ width: '8%'}}>Qty</th>
+                    <th style={{ width: '35%'}}>Medicine</th>
+                    <th style={{ width: '15%'}}>Brand</th>
+                    <th style={{ width: '10%'}}>Unit</th>
+                    <th style={{ width: '10%'}}>Qty</th>
                     <th>Instructions</th>
                   </tr>
                 </thead>
@@ -467,13 +577,29 @@ export default function TabsPricingExample({formik, appointment}) {
                         </IconButton>
                       </td>
                       <td valign='middle'>
-                          {`${medication.generic_name} (${medication.description}) - ${medication.unit}`}
+                          {`${medication.generic_name}`}
+                      </td>
+                      <td valign='middle'>
+                          <TextField
+                            type='text'
+                            variant='outlined'
+                            onChange={(e) => handleChangeMedicationValues(index, {...medication, description: e.target.value})}
+                            value={medication.description}
+                          />
+                      </td>
+                      <td valign='middle'>
+                          <TextField
+                            type='text'
+                            variant='outlined'
+                            onChange={(e) => handleChangeMedicationValues(index, {...medication, unit: e.target.value})}
+                            value={medication.unit}
+                          />
                       </td>
                       <td valign='middle'>
                           <TextField
                             type='number'
                             variant='outlined'
-                            onChange={(e) => handleChangeMedicationValues(index, {id: medication.id, generic_name: medication.generic_name, description: medication.description, unit: medication.unit, qty: e.target.value, instruction: medication.instruction})}
+                            onChange={(e) => handleChangeMedicationValues(index, {...medication, qty: e.target.value})}
                             value={medication.qty}
                           />
                       </td>
@@ -482,7 +608,7 @@ export default function TabsPricingExample({formik, appointment}) {
                             multiline={true}
                             fullWidth
                             variant='outlined'
-                            onChange={(e) => handleChangeMedicationValues(index, {id: medication.id, generic_name: medication.generic_name, description: medication.description, unit: medication.unit, qty: medication.qty, instruction: e.target.value})}
+                            onChange={(e) => handleChangeMedicationValues(index, {...medication, instruction: e.target.value})}
                             value={medication.instruction}
                           />
                       </td>
