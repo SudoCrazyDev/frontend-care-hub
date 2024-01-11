@@ -148,7 +148,7 @@ export default function PrintRx({appointment, medicines}){
                                 </View>
                                 <Text style={{fontSize: '12px', fontWeight: 700}}>NATIVIDAD M. TORRE, M.D.</Text>
                                 <Text style={{fontSize: '12px', fontWeight: 400}}>License No.: 0077811</Text>
-                                <Text style={{fontSize: '12px', fontWeight: 400}}>PTR No.: 0525578A</Text>
+                                <Text style={{fontSize: '12px', fontWeight: 400}}>PTR No.: 0998082A</Text>
                                 <Text style={{fontSize: '12px', fontWeight: 400}}>S2 No.: 010505RM21-044-M</Text>
                             </View>
                         </Page>
