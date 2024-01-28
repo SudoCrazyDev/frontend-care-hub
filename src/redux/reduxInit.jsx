@@ -27,9 +27,9 @@ export default function ReduxInitialize({children}){
     const handleFetchMedicines = () => {
         dispatch(setLoadingMedicine(true));
         Axios.get('medicines/get_all_medicines')
-        .then(res => {
-            dispatch(setMedicines(res.data));
-            dispatch(setInitialMedicines(res.data.data));
+        .then(({data}) => {
+            dispatch(setMedicines(data.data));
+            dispatch(setInitialMedicines(data.data));
         })
         .finally(() => {
             dispatch(setLoadingMedicine(false));

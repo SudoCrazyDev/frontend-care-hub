@@ -16,25 +16,11 @@ import MedicalCertificate from "../Printables/MedCert";
 export default function PatientData(){
     const {patientId} = useParams();
     const patients = GetPatients();
-    const [patientPhoto, setPatientPhoto] = useState("/assets/svg/maleUser.svg");
 
     const patientData = useMemo(() => {
         let foundPatient = patients.find(patient => patient.id == patientId);
         return foundPatient  || PatientModel;
     },[patients, patientId]);
-    
-    const handleFetchPatientPhoto = () => {
-        axios.get(`patients/get_patient_photo/${patientId}`)
-        .then(res => {
-            let stringUrl = res.data;
-            setPatientPhoto(stringUrl.replace('http://localhost:8000/', import.meta.env.VITE_STORAGE_URL));
-            // setPatientPhoto(stringUrl.replace('storage','storage'));
-        })
-    };
-
-    useEffect(() => {
-        handleFetchPatientPhoto()
-    },[]);
 
     return(
         <div className="row">
@@ -55,18 +41,9 @@ export default function PatientData(){
                         <h5 className="m-0 fw-bolder">{calculateAgeWithMonths(patientData.birthdate).age} years old</h5>
                     </div>
                 </div>
-                {patientPhoto === "/assets/svg/maleUser.svg" ? (
-                    <div className="ms-auto border rounded border-light shadow-lg" style={{ height: '180px', width: '250px', background: `url('/assets/svg/maleUser.svg')`, backgroundSize: `contain`, borderRadius: '10px'}}>
-
-                    </div>
-                ) 
-                : (
-                    <div className="ms-auto border rounded border-light shadow-lg" style={{ height: '180px', width: '250px', background: `url('${patientPhoto}')`, backgroundSize: `cover`, borderRadius: '10px'}}>
-
-                    </div>
-                )
-                    
-                }
+                <div className="ms-auto border rounded border-light shadow-lg" style={{ height: '180px', width: '250px', borderRadius: '10px'}}>
+                    <img src={patientData.photo_url ? patientData.photo_url : "/assets/svg/maleUser.svg"} height={180} width={250} />
+                </div>
                 
             </div>
             <Divider className="my-3"/>

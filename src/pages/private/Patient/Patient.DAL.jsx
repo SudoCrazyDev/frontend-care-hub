@@ -32,8 +32,8 @@ export default function InitializeFormik(type, patient){
     
     const handleUpdateSubmit = (values) => {
         axios.put(`patients/update_patient/${patient.id}`, values)
-        .then(res => {
-            dispatch(setPatients(res.data.data));
+        .then(({data}) => {
+            dispatch(setPatients(data.data));
             handleNotification("success", "Patient Updated successfully");
         })
         .catch(err => {

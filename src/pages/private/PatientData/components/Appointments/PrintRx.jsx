@@ -60,7 +60,7 @@ export default function PrintRx({appointment, medicines}){
             <DialogContent style={{height: '70vh'}}>
                 <PDFViewer style={{height: '100%', width: '100%'}}>
                     <Document>
-                        <Page size={"A5"} style={{fontFamily: 'Roboto', dispaly: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                        <Page size={["390", "610"]} style={{fontFamily: 'Roboto', dispaly: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}} fixed>
                                 <Image src={"/assets/png/company_logo.png"} style={{height: '25px', width: '25px'}} />
                                 <Text style={{height: 'auto', width: 'auto', fontWeight: 500}}>

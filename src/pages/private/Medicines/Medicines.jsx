@@ -37,6 +37,7 @@ export default function Medicines(){
     const handleFetchMedicines = () => {
         axios.get('medicines/get_all_medicines')
         .then(res => {
+            console.log(res);
             dispatch(setMedicines(res.data.data));
         });
         setSearch("");
@@ -56,7 +57,7 @@ export default function Medicines(){
                     <Divider className="my-3"/>
                     <div className="d-flex flex-row flex-wrap">
                         <div className="d-flex flex-row gap-3 align-items-center">
-                            <TextField 
+                            <TextField
                                 variant='outlined'
                                 className='my-2'
                                 type="text"

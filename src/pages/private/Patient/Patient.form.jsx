@@ -1,16 +1,17 @@
 import { TextField, Select, MenuItem, InputLabel, Divider, Button } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Webcam from "react-webcam";
 import { useEffect, useState } from "react";
 
-export default function PatientForm({formik}){
-    const [capturedPhoto, setCapturedPhoto] = useState("");
+function getBase64(file){
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
 
-    useEffect(() => {
-        formik.setFieldValue('photo_url', capturedPhoto);
-    }, [capturedPhoto]);
+export default function PatientForm({formik}){
     
     return(
         <>
@@ -91,31 +92,12 @@ export default function PatientForm({formik}){
             <div className="row">
                 <h2 className="m-0 fw-bolder">Patient Photo</h2>
                 <Divider className="my-2"/>
-                <div style={{ height: '20px', width: '20px'}}>
-                    {capturedPhoto === "" ?
-                    <Webcam
-                    audio={false}
-                    screenshotFormat="image/jpeg"
-                    className="shadow-lg border border-dark rounded"
-                    >
-                        {({getScreenshot}) => (
-                            <Button variant="contained" onClick={() => setCapturedPhoto(getScreenshot())}>
-                                Capture
-                            </Button>
-                        )}
-                    </Webcam>
-                    :
-                    <div className="row">
-                        <div className="col-12">
-                            <img src={capturedPhoto} className="shadow-lg border border-dark rounded"/>
-                        </div>
-                        <div className="col-12">
-                            <Button variant="contained" color="error" onClick={() => setCapturedPhoto("")}>
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
-                    }
+                <div className="p-3">
+                    <img src={formik.values.photo_url} height={250} width={250} />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="formFile" className="form-label">Upload photo</label>
+                    <input className="form-control" type="file" id="formFile" onChange={(e) => getBase64(e.target.files[0]).then((data) => formik.setFieldValue('photo_url', data))}/>
                 </div>
             </div>
         </>

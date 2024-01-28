@@ -37,8 +37,8 @@ export default function PatientLookup(){
         }
         dispatch(setLoading(true));
         axios.get(`patients/lookup/${keyword}`)
-        .then(res => {
-            dispatch(setPatients(res.data))
+        .then(({data}) => {
+            dispatch(setPatients(data.data))
         })
         .finally(()=>{
             dispatch(setLoading(false));
