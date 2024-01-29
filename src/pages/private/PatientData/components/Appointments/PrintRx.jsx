@@ -60,7 +60,7 @@ export default function PrintRx({appointment, medicines}){
             <DialogContent style={{height: '70vh'}}>
                 <PDFViewer style={{height: '100%', width: '100%'}}>
                     <Document>
-                        <Page size={["390", "610"]} style={{fontFamily: 'Roboto', dispaly: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                        <Page size={[530, 650]} style={{fontFamily: 'Roboto', dispaly: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                             <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}} fixed>
                                 <Image src={"/assets/png/company_logo.png"} style={{height: '25px', width: '25px'}} />
                                 <Text style={{height: 'auto', width: 'auto', fontWeight: 500}}>
@@ -134,15 +134,19 @@ export default function PrintRx({appointment, medicines}){
                                 </View>
                             </View>
                                 
-                            {medicines.map((medicine, index) => (
-                                <View key={index} style={{alignSelf: 'center', width: '95%', display: 'flex', justifyContent: 'center', marginTop: '18px', fontSize: '10px', gap: '3px'}}>
-                                    <Text>{`${medicine.generic_name} - ${medicine.unit}`}</Text>
-                                    <Text>{`(${medicine.description}) Qty: ${medicine.qty}`}</Text>
-                                    <Text style={{fontWeight: 500, fontStyle: 'italic'}}>{`SIG: ${medicine.instruction}`}</Text>
-                                </View>
-                            ))}
+                            {medicines.map((medicine, index) => {
+                                if(medicine.generic_name){
+                                    return (
+                                        <View key={index} style={{alignSelf: 'center', width: '95%', display: 'flex', justifyContent: 'center', marginTop: '18px', fontSize: '10px', gap: '3px'}}>
+                                        <Text>{`${medicine.generic_name} - ${medicine.unit}`}</Text>
+                                        <Text>{`(${medicine.description}) Qty: ${medicine.qty}`}</Text>
+                                        <Text style={{fontWeight: 500, fontStyle: 'italic'}}>{`SIG: ${medicine.instruction}`}</Text>
+                                    </View>
+                                    )
+                                }
+                            })}
                             
-                            <View style={{marginTop: 'auto', display: 'flex', flexDirection: 'column', paddingTop: '20px'}} fixed>
+                            <View style={{marginLeft: '5px', marginTop: 'auto', display: 'flex', flexDirection: 'column', paddingTop: '20px', width: '95%'}} fixed>
                                 <View style={{display:'flex', flexDirection: 'row'}}>
                                     <Text style={{width: '45%', borderTop: '0.8px solid #222222', marginTop: '2px', marginBottom: '5px'}}></Text>
                                 </View>
