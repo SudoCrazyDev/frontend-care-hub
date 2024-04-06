@@ -57,7 +57,7 @@ export default function MedicineModal({type = 'new', medicine = {}}){
                                             formik.setFieldValue('unit_id', newValue.id);
                                         }}
                                         options={medicineUnits}
-                                        inputValue={formik.values.unit_id}
+                                        // inputValue={formik.values.unit_id}
                                         getOptionLabel={(option) => option.unit_name}
                                         size="medium"
                                         style={{width: '80%'}}

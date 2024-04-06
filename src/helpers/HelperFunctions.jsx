@@ -6,8 +6,11 @@ function calculateAgeWithMonths(birthday) {
     return 'NO AGE';
   }
   const birthdayDate = new Date(birthday);
-  const age = new Date().getFullYear() - birthdayDate.getFullYear();
   const months = new Date().getMonth() - birthdayDate.getMonth();
+  let age = new Date().getFullYear() - birthdayDate.getFullYear();
+  if(months <= 0){
+    age -= 1;
+  }
   return { age, months };
 }
 
