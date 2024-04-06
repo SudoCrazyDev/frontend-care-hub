@@ -9,15 +9,21 @@ import { useSelector } from "react-redux";
 
 export default function MedicineModal({type = 'new', medicine = {}}){
     const [open, setOpen] = useState(false);
-    const [selectedBrand, setSelectedBrand] = useState("");
-    const [selectedUnit, setSelectedUnit] = useState("");
     const {medicineBrands } = useSelector(state => state.medicineBrands);
-    const { medicineUnits } = useSelector(state => state.medicineUnits);
+    const [units, setUnits] = useState([]);
     const formik = InitializeFormik(type, medicine);
 
     const handleOpenModal = () => {
         formik.resetForm();
         setOpen(!open);
+    };
+    
+    const handleLookUpUnit = (e) => {
+        if(e.target.value.length < 3) return ;
+        axios.get(`medicines/lookup_unit/${e.target.value}`)
+        .then(({data}) => {
+            setUnits(data);
+        });
     };
     
     useEffect(()=>{
@@ -56,12 +62,13 @@ export default function MedicineModal({type = 'new', medicine = {}}){
                                         onChange={(event, newValue) => {
                                             formik.setFieldValue('unit_id', newValue.id);
                                         }}
-                                        options={medicineUnits}
+                                        options={units}
                                         // inputValue={formik.values.unit_id}
                                         getOptionLabel={(option) => option.unit_name}
+                                        key={(option) => option.id}
                                         size="medium"
                                         style={{width: '80%'}}
-                                        renderInput={(params) => <TextField {...params} fullWidth label="Medicine Unit" />}
+                                        renderInput={(params) => <TextField onChange={(e) => handleLookUpUnit(e)} {...params} fullWidth label="Medicine Unit" />}
                                     />
                             </div>
                             <div className="col-12 d-flex flex-row justify-content-center">
@@ -70,7 +77,6 @@ export default function MedicineModal({type = 'new', medicine = {}}){
                                             formik.setFieldValue('brand_id', newValue.id);
                                         }}
                                         options={medicineBrands}
-                                        inputValue={formik.values.brand_id}
                                         getOptionLabel={(option) => option.brand_name}
                                         size="medium"
                                         style={{width: '80%'}}

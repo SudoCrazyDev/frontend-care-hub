@@ -30,14 +30,13 @@ export default function Medicines(){
     const handleFetchLookupMedicine = () => {
         axios.get(`medicines/lookup_medicine/${search}`)
         .then(res => {
-            dispatch(setMedicines(res.data.data));
+            dispatch(setMedicines(res.data));
         });
     };
     
     const handleFetchMedicines = () => {
         axios.get('medicines/get_all_medicines')
         .then(res => {
-            console.log(res);
             dispatch(setMedicines(res.data.data));
         });
         setSearch("");
